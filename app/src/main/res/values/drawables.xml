@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="activity_Background" type="color">@color/colorSmokeWhite</item>
+    <item name="text_Color_Dark" type="color">@color/colorBlack</item>
+    <item name="text_Color_Accent" type="color">@color/colorAccent</item>
+    <item name="text_Hint_Color" type="color">@color/colorDustyGray</item>
+    <item name="text_Color_Light" type="color">@color/colorWhite</item>
+    <item name="icon_Color_Accent" type="color">@color/colorAccent</item>
+    <item name="icon_Color_Light" type="color">@color/colorWhite</item>
+</resources>

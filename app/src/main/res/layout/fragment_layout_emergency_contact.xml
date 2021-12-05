@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.rs.smartpoultryfarm.wiget.ArcView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_collapseMode="parallax"
+    app:shape_arc_cropDirection="outside"
+    app:shape_arc_height="@dimen/_12sdp"
+    app:shape_arc_position="top"
+    android:background="@android:color/transparent"
+    tools:context=".fragment.ContactsFragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/padding_Large"
+        android:background="@color/activity_Background">
+
+        <FrameLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingStart="@dimen/padding_Large"
+            android:paddingEnd="@dimen/padding_Large">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backBtn"
+                android:layout_width="@dimen/icon_Size_Medium"
+                android:layout_height="@dimen/icon_Size_Medium"
+                android:layout_gravity="start|center_vertical"
+                android:adjustViewBounds="true"
+                android:padding="@dimen/_6sdp"
+                app:srcCompat="@drawable/ic_arrow_left" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/icon_Size_Large"
+                android:layout_marginEnd="@dimen/icon_Size_Large"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/emergencyContact"
+                android:textAlignment="center"
+                android:textColor="@color/text_Color_Dark"
+                android:textSize="@dimen/text_Size_Default"
+                android:textStyle="bold" />
+
+        </FrameLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_Medium"
+            android:layout_marginStart="@dimen/margin_Extra_Large"
+            android:layout_marginEnd="@dimen/margin_Extra_Large"
+            android:layout_marginBottom="@dimen/margin_Large"
+            android:background="@drawable/shape_card"
+            android:padding="@dimen/padding_Extra_Large"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!--Contact Name-->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/_144sdp"
+                    android:layout_marginEnd="@dimen/margin_Small"
+                    android:textColor="@color/text_Color_Dark"
+                    android:textSize="@dimen/text_Size_Medium"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="David Rechard" />
+
+                <!--Contact No-->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_Small"
+                    android:textColor="@color/text_Color_Dark"
+                    android:textSize="@dimen/text_Size_Small"
+                    android:alpha=".75"
+                    tools:text="+8801846275984" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/margin_Large"
+                android:layout_marginBottom="@dimen/margin_Small"
+                android:orientation="horizontal">
+
+                <!--Edit Contact-->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/editContact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_edit"
+                    android:drawablePadding="@dimen/padding_Small"
+                    android:layout_marginEnd="@dimen/margin_Extra_Small"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:paddingStart="@dimen/padding_Small"
+                    android:paddingEnd="@dimen/padding_Medium"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:background="@drawable/shape_button_add"
+                    android:gravity="center"
+                    android:text="@string/edit"
+                    android:textColor="@color/text_Color_Light"
+                    android:textSize="@dimen/text_Size_Extra_Small"/>
+
+                <!--Remove Contact-->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/removeContact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_remove"
+                    android:drawablePadding="@dimen/padding_Small"
+                    android:layout_marginStart="@dimen/margin_Extra_Small"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:paddingStart="@dimen/padding_Small"
+                    android:paddingEnd="@dimen/padding_Medium"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:background="@drawable/shape_button_remove"
+                    android:gravity="center"
+                    android:text="@string/remove"
+                    android:textColor="@color/text_Color_Light"
+                    android:textSize="@dimen/text_Size_Extra_Small"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.rs.smartpoultryfarm.wiget.ArcView>

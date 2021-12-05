@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_Background"
+    tools:context=".activity.SplashActivity">
+
+    <!--App Logo-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_96sdp"
+        android:tint="@color/colorAccent"
+        android:adjustViewBounds="true"
+        android:layout_centerInParent="true"
+        app:srcCompat="@drawable/app_logo" />
+
+    <!--Loading-->
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/loader"
+        android:layout_above="@+id/networkCheckingTv"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="@dimen/icon_Size_Small"
+        android:layout_height="@dimen/icon_Size_Small"
+        android:layout_marginBottom="@dimen/margin_Small"
+        android:layout_centerHorizontal="true"
+        app:SpinKit_Color="@color/colorAccent" />
+
+    <!--Network Status-->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/networkCheckingTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_32sdp"
+        android:text="@string/network_Checking"
+        android:textColor="@color/text_Color_Accent"
+        android:textSize="@dimen/text_Size_Small"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

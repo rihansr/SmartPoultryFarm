@@ -1,0 +1,61 @@
+<resources>
+
+    <!--App Title-->
+    <string name="app_name">Smart Poultry Farm</string>
+
+    <!--Title-->
+    <string name="network_Checking">Checking network…</string>
+    <string name="temperature">TEMPERATURE</string>
+    <string name="humidity">Humidity</string>
+    <string name="airQuality">Air Quality</string>
+    <string name="good">Good</string>
+    <string name="moderate">Moderate</string>
+    <string name="unhealthyForSensitiveGroups">Unhealthy for Sensitive Groups</string>
+    <string name="unhealthy">Unhealthy</string>
+    <string name="veryUnhealthy">Very Unhealthy</string>
+    <string name="hazardous">Hazardous</string>
+    <string name="normal">Normal</string>
+    <string name="high">High</string>
+    <string name="low">Low</string>
+    <string name="lightOne">Light One</string>
+    <string name="lightTwo">Light Two</string>
+    <string name="on">ON</string>
+    <string name="off">OFF</string>
+    <string name="name">Name</string>
+    <string name="number">Number</string>
+    <string name="contacts">Phone Contacts</string>
+    <string name="addContact">Add Contact</string>
+    <string name="emergencyContact">Emergency Contact</string>
+    <string name="contactPermission">Contacts Permission</string>
+    <string name="smsPermission">SMS Permission</string>
+    <string name="unknown">Unknown</string>
+    <string name="numberNotFound">No number found</string>
+
+    <!--Symbol-->
+    <string name="temperatureUnit">\u00B0F</string>
+    <string name="nullSymbol">Ø</string>
+    <string name="humidityUnit">%</string>
+    <string name="airQualityUnit">μg/m³</string>
+    <string name="zero">0</string>
+
+    <!--Button Title-->
+    <string name="retry">Retry</string>
+    <string name="forbid">Forbid</string>
+    <string name="allow">Allow Now</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="edit">Edit</string>
+    <string name="addNew">Add New</string>
+    <string name="remove">Remove</string>
+    <string name="openSettings">Open Settings</string>
+
+    <!--Message-->
+    <string name="network_Error">Network error. Please retry when network is stable.</string>
+    <string name="allowNotificationMessage">&quot;Patient Monitoring&quot; requires Notification permission, do you allow?</string>
+    <string name="allowAutoStartupMessage">Please allow Auto Startup to always run in the background. Our app runs in background else our services can\'t be accessed.</string>
+    <string name="contactPermissionMessage">Contacts Permission is necessary for getting all emergency contact from your device</string>
+    <string name="smsPermissionMessage">SMS Permission is necessary for sending message to emergency contact</string>
+    <string name="noEmergencyContact">Sorry, you have no emergency contact, please add new.</string>
+    <string name="phone_Error">Please! Enter your mobile number</string>
+
+</resources>

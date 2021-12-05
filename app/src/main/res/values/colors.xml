@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#E02753</color>
+    <color name="colorPrimary">#E07188</color>dra
+    <color name="colorSecondary">#F8E99B</color>
+    <color name="colorWhite">#F8F8F9</color>
+    <color name="colorSmokeWhite">#EDEDED</color>
+    <color name="colorBlack">#58575D</color>
+    <color name="colorDustyGray">#9B9B9B</color>
+</resources>

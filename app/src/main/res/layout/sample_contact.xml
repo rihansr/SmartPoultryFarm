@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".adapter.ContactAdapter">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_Extra_Large"
+        android:layout_marginEnd="@dimen/margin_Extra_Large"
+        android:layout_marginBottom="@dimen/margin_Small"
+        android:background="@drawable/shape_card"
+        android:padding="@dimen/padding_Extra_Large"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!--Contact Name-->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/name"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_Extra_Small"
+                android:textColor="@color/text_Color_Dark"
+                android:textSize="@dimen/text_Size_Medium"
+                android:ellipsize="end"
+                android:maxLines="1"
+                tools:text="David Rechard" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <!--Add Contact-->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/addContact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_add"
+                    android:drawablePadding="@dimen/padding_Small"
+                    android:paddingTop="@dimen/_1sdp"
+                    android:paddingStart="@dimen/padding_Small"
+                    android:paddingEnd="@dimen/padding_Medium"
+                    android:paddingBottom="@dimen/_1sdp"
+                    android:background="@drawable/shape_button_add"
+                    android:gravity="center"
+                    android:text="@string/add"
+                    android:textColor="@color/text_Color_Light"
+                    android:textSize="@dimen/text_Size_Extra_Small"
+                    android:visibility="visible"/>
+
+                <!--Remove Contact-->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/removeContact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_remove"
+                    android:drawablePadding="@dimen/padding_Small"
+                    android:paddingTop="@dimen/_1sdp"
+                    android:paddingStart="@dimen/padding_Small"
+                    android:paddingEnd="@dimen/padding_Medium"
+                    android:paddingBottom="@dimen/_1sdp"
+                    android:background="@drawable/shape_button_remove"
+                    android:gravity="center"
+                    android:text="@string/remove"
+                    android:textColor="@color/text_Color_Light"
+                    android:textSize="@dimen/text_Size_Extra_Small"
+                    android:maxLength="3"
+                    android:visibility="gone"/>
+
+            </FrameLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <!--Contact No-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_Color_Dark"
+            android:textSize="@dimen/text_Size_Small"
+            android:alpha=".75"
+            tools:text="+8801846275984" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Icon Size-->
+    <dimen name="icon_Size_Small">@dimen/_24sdp</dimen>
+    <dimen name="icon_Size_Medium">@dimen/_28sdp</dimen>
+    <dimen name="icon_Size_Large">@dimen/_32sdp</dimen>
+
+    <!--Font Size-->
+    <dimen name="text_Size_Extra_Small">@dimen/_9ssp</dimen>
+    <dimen name="text_Size_Small">@dimen/_10ssp</dimen>
+    <dimen name="text_Size_Standard">@dimen/_11ssp</dimen>
+    <dimen name="text_Size_Medium">@dimen/_12ssp</dimen>
+    <dimen name="text_Size_Default">@dimen/_13ssp</dimen>
+    <dimen name="text_Size_Large">@dimen/_20ssp</dimen>
+
+    <!--Margin-->
+    <dimen name="margin_Extra_Small">@dimen/_2sdp</dimen>
+    <dimen name="margin_Small">@dimen/_4sdp</dimen>
+    <dimen name="margin_Medium">@dimen/_8sdp</dimen>
+    <dimen name="margin_Large">@dimen/_12sdp</dimen>
+    <dimen name="margin_Extra_Large">@dimen/_16sdp</dimen>
+
+    <!--Padding-->
+    <dimen name="padding_Extra_Small">@dimen/_2sdp</dimen>
+    <dimen name="padding_Small">@dimen/_4sdp</dimen>
+    <dimen name="padding_Medium">@dimen/_8sdp</dimen>
+    <dimen name="padding_Large">@dimen/_12sdp</dimen>
+    <dimen name="padding_Extra_Large">@dimen/_16sdp</dimen>
+    <dimen name="padding_Double_Extra_Large">@dimen/_24sdp</dimen>
+
+    <!--Radius-->
+    <dimen name="card_Radius_Small">@dimen/_8sdp</dimen>
+    <dimen name="card_Radius_Medium">@dimen/_12sdp</dimen>
+    <dimen name="card_Radius_Large">@dimen/_24sdp</dimen>
+
+</resources>

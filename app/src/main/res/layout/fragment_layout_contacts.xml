@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.rs.smartpoultryfarm.wiget.ArcView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_collapseMode="parallax"
+    app:shape_arc_cropDirection="outside"
+    app:shape_arc_height="@dimen/_12sdp"
+    app:shape_arc_position="top"
+    android:background="@android:color/transparent"
+    tools:context=".fragment.ContactsFragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_384sdp"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/padding_Large"
+        android:background="@color/activity_Background">
+
+        <FrameLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingStart="@dimen/padding_Large"
+            android:paddingEnd="@dimen/padding_Large">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backBtn"
+                android:layout_width="@dimen/icon_Size_Medium"
+                android:layout_height="@dimen/icon_Size_Medium"
+                android:layout_gravity="start|center_vertical"
+                android:adjustViewBounds="true"
+                android:padding="@dimen/_6sdp"
+                app:srcCompat="@drawable/ic_arrow_left" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/icon_Size_Large"
+                android:layout_marginEnd="@dimen/icon_Size_Large"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/contacts"
+                android:textAlignment="center"
+                android:textColor="@color/text_Color_Dark"
+                android:textSize="@dimen/text_Size_Default"
+                android:textStyle="bold" />
+
+        </FrameLayout>
+
+        <!--Contacts-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvContacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar"
+            android:fadingEdgeLength="@dimen/_12sdp"
+            android:fadingEdge="vertical"
+            android:requiresFadingEdge="vertical"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            android:paddingTop="@dimen/padding_Medium"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="9"
+            tools:listitem="@layout/sample_contact" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</com.rs.smartpoultryfarm.wiget.ArcView>

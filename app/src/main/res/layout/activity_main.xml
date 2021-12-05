@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_Background"
+    tools:context=".activity.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--Content-->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/padding_Extra_Large"
+            android:paddingTop="@dimen/padding_Extra_Large"
+            android:paddingEnd="@dimen/padding_Extra_Large">
+
+            <!--Temperature-->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_Small"
+                android:background="@drawable/shape_card"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_Extra_Large">
+
+                <!--Temperature - Icon-->
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="@dimen/_48sdp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_marginEnd="@dimen/margin_Large"
+                    app:lottie_autoPlay="true"
+                    app:lottie_colorFilter="@color/colorPrimary"
+                    app:lottie_fileName="lottie/temperature.json"
+                    app:lottie_loop="true" />
+
+                <!--Temperature - Content-->
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <!--Temperature - Title-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_Extra_Small"
+                        android:text="@string/temperature"
+                        android:textColor="@color/text_Color_Accent"
+                        android:textSize="@dimen/text_Size_Small"
+                        android:textStyle="bold" />
+
+                    <!--Temperature - Details-->
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!--Body Temperature - Value-->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/temperature.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginEnd="@dimen/margin_Small"
+                            android:text="@string/zero"
+                            android:textColor="@color/text_Color_Dark"
+                            android:textSize="@dimen/text_Size_Large" />
+
+                        <!--Temperature - Unit-->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:layout_marginTop="@dimen/margin_Extra_Small"
+                            android:text="@string/temperatureUnit"
+                            android:textColor="@color/text_Color_Dark"
+                            android:textSize="@dimen/text_Size_Small" />
+
+                        <!--Temperature - Status-->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/temperature.Status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:alpha=".75"
+                            android:gravity="end"
+                            android:text="@string/normal"
+                            android:textColor="@color/text_Color_Dark"
+                            android:textSize="@dimen/text_Size_Small" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <!--Last Temperature-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/temperature.Last"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginTop="@dimen/margin_Small"
+                        android:alpha=".75"
+                        android:textColor="@color/text_Color_Dark"
+                        android:textSize="@dimen/text_Size_Extra_Small"
+                        tools:text="0 F" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!--Humidity-->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_Small"
+                android:background="@drawable/shape_card"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_Extra_Large">
+
+                <!--Humidity - Icon-->
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="@dimen/_48sdp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_marginEnd="@dimen/margin_Large"
+                    app:lottie_autoPlay="true"
+                    app:lottie_colorFilter="@color/colorPrimary"
+                    app:lottie_fileName="lottie/humidity.json"
+                    app:lottie_loop="true" />
+
+                <!--Humidity - Content-->
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <!--Humidity - Title-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_Extra_Small"
+                        android:text="@string/humidity"
+                        android:textColor="@color/text_Color_Accent"
+                        android:textSize="@dimen/text_Size_Small"
+                        android:textStyle="bold" />
+
+                    <!--Humidity - Details-->
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!--Humidity - Value-->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/humidity.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginEnd="@dimen/margin_Small"
+                            android:text="@string/zero"
+                            android:textColor="@color/text_Color_Dark"
+                            android:textSize="@dimen/text_Size_Large" />
+
+                        <!--Humidity - Unit-->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:layout_marginTop="@dimen/margin_Extra_Small"
+                            android:text="@string/humidityUnit"
+                            android:textColor="@color/text_Color_Dark"
+                            android:textSize="@dimen/text_Size_Small" />
+
+                        <!--Humidity Status-->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/humidity.Status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:alpha=".75"
+                            android:gravity="end"
+                            android:text="@string/normal"
+                            android:textColor="@color/text_Color_Dark"
+                            android:textSize="@dimen/text_Size_Small" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <!--Last Humidity Rate-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/humidity.Last"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginTop="@dimen/margin_Small"
+                        android:alpha=".75"
+                        android:textColor="@color/text_Color_Dark"
+                        android:textSize="@dimen/text_Size_Extra_Small"
+                        tools:text="0 %" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!--Air Quality-->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_Small"
+                android:background="@drawable/shape_card"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_Extra_Large">
+
+                <!--Air Quality - Icon-->
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="@dimen/_64sdp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_marginStart="@dimen/_minus8sdp"
+                    android:layout_marginEnd="@dimen/margin_Small"
+                    app:lottie_autoPlay="true"
+                    app:lottie_colorFilter="@color/colorPrimary"
+                    app:lottie_fileName="lottie/air_quality.json"
+                    app:lottie_loop="true" />
+
+                <!--Air Quality - Details-->
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <!--Air Quality - Title-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_Extra_Small"
+                        android:text="@string/airQuality"
+                        android:textColor="@color/text_Color_Accent"
+                        android:textSize="@dimen/text_Size_Small"
+                        android:textStyle="bold" />
+
+                    <!--Air Quality - Content-->
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!--Air Quality - Value-->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/airQuality.Value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginEnd="@dimen/margin_Small"
+                            android:text="@string/zero"
+                            android:textColor="@color/text_Color_Dark"
+                            android:textSize="@dimen/text_Size_Large" />
+
+                        <!--Air Quality - Unit-->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:layout_marginTop="@dimen/margin_Extra_Small"
+                            android:text="@string/airQualityUnit"
+                            android:textColor="@color/text_Color_Dark"
+                            android:textSize="@dimen/text_Size_Small" />
+
+                        <!--Air Quality - Status-->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/airQuality.Status"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:alpha=".75"
+                            android:gravity="end"
+                            android:text="@string/good"
+                            android:textColor="@color/text_Color_Dark"
+                            android:textSize="@dimen/text_Size_Small" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <!--Last Air Quality-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/airQuality.Last"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginTop="@dimen/margin_Small"
+                        android:alpha=".75"
+                        android:textColor="@color/text_Color_Dark"
+                        android:textSize="@dimen/text_Size_Extra_Small"
+                        tools:text="0 μg/m³" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_Medium">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_Small"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/lightOne"
+                    android:textColor="@color/text_Color_Accent"
+                    android:textSize="@dimen/text_Size_Small"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/lightOne.Switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/off"
+                    android:textColor="@color/text_Color_Dark"
+                    android:textSize="@dimen/text_Size_Small"
+                    android:textStyle="normal" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <View
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="@dimen/_48sdp"
+                android:layout_marginStart="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Small"
+                android:background="@color/text_Color_Accent" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_Small"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/lightTwo"
+                    android:textColor="@color/text_Color_Accent"
+                    android:textSize="@dimen/text_Size_Small"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/lightTwo.Switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/off"
+                    android:textColor="@color/text_Color_Dark"
+                    android:textSize="@dimen/text_Size_Small"
+                    android:textStyle="normal" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <!--Loading-->
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:id="@+id/loader"
+            style="@style/SpinKitView.Large.Circle"
+            android:layout_width="@dimen/icon_Size_Medium"
+            android:layout_height="@dimen/icon_Size_Medium"
+            android:layout_centerInParent="true"
+            app:SpinKit_Color="@color/colorAccent" />
+
+    </RelativeLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
