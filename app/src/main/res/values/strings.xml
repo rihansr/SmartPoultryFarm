@@ -30,6 +30,8 @@
     <string name="smsPermission">SMS Permission</string>
     <string name="unknown">Unknown</string>
     <string name="numberNotFound">No number found</string>
+    <string name="rememberMe">Remember Me</string>
+    <string name="processing">Processing…</string>
 
     <!--Symbol-->
     <string name="temperatureUnit">\u00B0F</string>
@@ -37,6 +39,10 @@
     <string name="humidityUnit">%</string>
     <string name="airQualityUnit">μg/m³</string>
     <string name="zero">0</string>
+
+    <!--Hints-->
+    <string name="id_Hint">Channel ID</string>
+    <string name="key_Hint">Key</string>
 
     <!--Button Title-->
     <string name="retry">Retry</string>
@@ -47,6 +53,8 @@
     <string name="edit">Edit</string>
     <string name="addNew">Add New</string>
     <string name="remove">Remove</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
     <string name="openSettings">Open Settings</string>
 
     <!--Message-->
@@ -57,5 +65,10 @@
     <string name="smsPermissionMessage">SMS Permission is necessary for sending message to emergency contact</string>
     <string name="noEmergencyContact">Sorry, you have no emergency contact, please add new.</string>
     <string name="phone_Error">Please! Enter your mobile number</string>
+    <string name="channelId_Error">Please! Enter channel id</string>
+    <string name="validChannelId_Error">Please! Enter valid channel id</string>
+    <string name="key_Error">Please! Enter key</string>
+    <string name="validKeyError">Please! Enter valid key</string>
+    <string name="dataNotExist">Please! check your channel id &amp; key</string>
 
 </resources>

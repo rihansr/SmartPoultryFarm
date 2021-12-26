@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.rs.smartpoultryfarm.wiget.ArcView
+<com.rs.smartpoultryfarm.widget.ArcView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -116,4 +116,4 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-</com.rs.smartpoultryfarm.wiget.ArcView>
+</com.rs.smartpoultryfarm.widget.ArcView>

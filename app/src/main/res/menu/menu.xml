@@ -10,14 +10,20 @@
 
     <item
         android:id="@+id/phoneContacts"
-        android:icon="@drawable/ic_contact"
+        android:icon="@drawable/ic_phone_contact"
         app:showAsAction="collapseActionView"
         android:title="@string/contacts" />
 
     <item
         android:id="@+id/emergencyContact"
-        android:icon="@drawable/ic_contact"
+        android:icon="@drawable/ic_emergency_contact"
         app:showAsAction="collapseActionView"
         android:title="@string/emergencyContact" />
+
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_logout"
+        app:showAsAction="collapseActionView"
+        android:title="@string/logout" />
 
 </menu>

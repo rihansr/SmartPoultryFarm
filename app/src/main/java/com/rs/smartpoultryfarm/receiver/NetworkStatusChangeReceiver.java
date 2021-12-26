@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+
+import com.rs.smartpoultryfarm.activity.LoginActivity;
 import com.rs.smartpoultryfarm.activity.MainActivity;
 import com.rs.smartpoultryfarm.activity.SplashActivity;
 import com.rs.smartpoultryfarm.util.Constants;
@@ -33,6 +35,9 @@ public class NetworkStatusChangeReceiver extends BroadcastReceiver {
 
         if (mContext.getClass() == SplashActivity.class) {
             ((SplashActivity) mContext).updateInternetConnectionStatus(isConnected);
+        }
+        else if (mContext.getClass() == LoginActivity.class) {
+            ((LoginActivity) mContext).updateInternetConnectionStatus(isConnected);
         }
         else if (mContext.getClass() == MainActivity.class) {
             ((MainActivity) mContext).updateInternetConnectionStatus(isConnected);

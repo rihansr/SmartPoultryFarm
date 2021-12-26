@@ -2,6 +2,7 @@
 <resources>
 
     <!--Icon Size-->
+    <dimen name="icon_Size_Extra_Small">@dimen/_16sdp</dimen>
     <dimen name="icon_Size_Small">@dimen/_24sdp</dimen>
     <dimen name="icon_Size_Medium">@dimen/_28sdp</dimen>
     <dimen name="icon_Size_Large">@dimen/_32sdp</dimen>
@@ -28,6 +29,14 @@
     <dimen name="padding_Large">@dimen/_12sdp</dimen>
     <dimen name="padding_Extra_Large">@dimen/_16sdp</dimen>
     <dimen name="padding_Double_Extra_Large">@dimen/_24sdp</dimen>
+
+    <!--Button Size-->
+    <dimen name="button_Width_Small">@dimen/_128sdp</dimen>
+    <dimen name="button_Height_Small">@dimen/_32sdp</dimen>
+
+    <!--Border Size-->
+    <dimen name="border_Small">@dimen/_1sdp</dimen>
+    <dimen name="border_Large">@dimen/_2sdp</dimen>
 
     <!--Radius-->
     <dimen name="card_Radius_Small">@dimen/_8sdp</dimen>

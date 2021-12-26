@@ -15,6 +15,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.GsonBuilder;
 import com.rs.smartpoultryfarm.api.API;
+import com.rs.smartpoultryfarm.util.SharedPreference;
 
 public class AgroDataModel extends AndroidViewModel {
 
@@ -32,7 +33,7 @@ public class AgroDataModel extends AndroidViewModel {
         data = new JsonLiveData(application);
     }
 
-    public MutableLiveData<AgroData> getHealthData() {
+    public MutableLiveData<PoultryData> getHealthData() {
         return data;
     }
 
@@ -41,7 +42,7 @@ public class AgroDataModel extends AndroidViewModel {
         data = new JsonLiveData(this.getApplication());
     }
 
-    public class JsonLiveData extends MutableLiveData<AgroData> {
+    public class JsonLiveData extends MutableLiveData<PoultryData> {
         private final Context context;
 
         public JsonLiveData(Context context) {
@@ -50,24 +51,16 @@ public class AgroDataModel extends AndroidViewModel {
         }
 
         private void LoadData() {
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, API.getDataFeedURL(2),
-                    response -> {
-                        AgroData agroData = new GsonBuilder().create().fromJson(response, AgroData.class);
-                        if (agroData == null) return;
-                        if (agroData.getCode() == 404) return;
-                        postValue(agroData);
-                        setValue(agroData);
+            SharedPreference sp = new SharedPreference(context);
+            API.invoke(context, Request.Method.GET,
+                    API.getDataFeedURL(sp.channelData(SharedPreference.CHANNEL_ID_SP_KEY), sp.channelData(SharedPreference.CHANNEL_KEY_SP_KEY), 2),
+                    data -> {
+                        if (data == null) return;
+                        if (data.getCode() == 404) return;
+                        postValue(data);
+                        setValue(data);
                         refresh.postValue(1);
-                    },
-                    Throwable::printStackTrace);
-
-            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-            );
-
-            RequestQueue requestQueue = Volley.newRequestQueue(context);
-            requestQueue.add(stringRequest);
+                    });
         }
     }
 }

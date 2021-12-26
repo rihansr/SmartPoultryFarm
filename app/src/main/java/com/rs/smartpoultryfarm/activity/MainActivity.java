@@ -12,8 +12,6 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,9 +30,8 @@ import com.rs.smartpoultryfarm.controller.AppController;
 import com.rs.smartpoultryfarm.fragment.AddContactFragment;
 import com.rs.smartpoultryfarm.fragment.ContactsFragment;
 import com.rs.smartpoultryfarm.fragment.EmergencyContactFragment;
-import com.rs.smartpoultryfarm.model.Contact;
 import com.rs.smartpoultryfarm.model.Feed;
-import com.rs.smartpoultryfarm.model.AgroData;
+import com.rs.smartpoultryfarm.model.PoultryData;
 import com.rs.smartpoultryfarm.model.AgroDataModel;
 import com.rs.smartpoultryfarm.receiver.NotifyUserReceiver;
 import com.rs.smartpoultryfarm.remote.PermissionManager;
@@ -211,9 +208,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         double temperature = sp.feedData(SharedPreference.TEMP_VALUE_SP_KEY);
         double airQuality = sp.feedData(SharedPreference.AIR_QUALITY_VALUE_SP_KEY);
 
-        AgroData agroData = new AgroData();
-        agroData.setFeeds(Collections.singletonList(new Feed(temperature, humidity, airQuality)));
-        dataSetup(agroData);
+        PoultryData poultryData = new PoultryData();
+        poultryData.setFeeds(Collections.singletonList(new Feed(temperature, humidity, airQuality)));
+        dataSetup(poultryData);
 
         dataModel.getRefresh().observe(MainActivity.this, o -> dataModel.getHealthData().observe(MainActivity.this, data -> {
             refreshLayout.setRefreshing(false);
@@ -255,16 +252,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private final BroadcastReceiver mDataReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            AgroData agroData = (AgroData) intent.getSerializableExtra(Constants.DATA_INTENT_KEY);
-            assert agroData != null;
-            dataSetup(agroData);
+            PoultryData poultryData = (PoultryData) intent.getSerializableExtra(Constants.DATA_INTENT_KEY);
+            assert poultryData != null;
+            dataSetup(poultryData);
         }
     };
 
-    private void dataSetup(AgroData agroData){
-        Feed lastFeed = agroData.getFeeds().size() == 2 && agroData.getFeeds().get(1) != null ? agroData.getFeeds().get(1) : null;
+    private void dataSetup(PoultryData poultryData){
+        Feed lastFeed = poultryData.getFeeds().size() == 2 && poultryData.getFeeds().get(1) != null ? poultryData.getFeeds().get(1) : null;
 
-        Feed currentFeed = agroData.getFeeds().get(0);
+        Feed currentFeed = poultryData.getFeeds().get(0);
         if(currentFeed == null) return;
 
         /**
@@ -412,6 +409,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             case R.id.emergencyContact:
                 EmergencyContactFragment.show();
                 break;
+            case R.id.logout:
+                sp.setLoggedIn(false);
+                sp.channelData(SharedPreference.CHANNEL_ID_SP_KEY, null);
+                sp.channelData(SharedPreference.CHANNEL_KEY_SP_KEY, null);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -496,22 +501,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             messageText.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorSmokeWhite));
         }
     }
-
-    protected void sendSMS(Context context, String message) {
-        if (!new PermissionManager(PermissionManager.Permission.SMS, false).isGranted()) return;
-        SharedPreference sp = new SharedPreference(context);
-        Contact contact = sp.getEmergencyContact();
-        if (contact == null || contact.getNumber() == null) return;
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(contact.getNumber(), null, message, null, null);
-            Log.e(Constants.TAG, "Message sent successfully");
-        } catch (Exception ex) {
-            Log.e(Constants.TAG, "Message not sent, reason: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
-
 
     /**
      *  Monitor Internet Connection

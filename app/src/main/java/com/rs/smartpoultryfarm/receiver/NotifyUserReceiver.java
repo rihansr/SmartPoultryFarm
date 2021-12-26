@@ -13,29 +13,20 @@ import android.media.RingtoneManager;
 import android.os.Build;
 import android.telephony.SmsManager;
 import android.util.Log;
-
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.GsonBuilder;
 import com.rs.smartpoultryfarm.BuildConfig;
-import com.rs.smartpoultryfarm.activity.MainActivity;
 import com.rs.smartpoultryfarm.R;
+import com.rs.smartpoultryfarm.activity.MainActivity;
 import com.rs.smartpoultryfarm.api.API;
 import com.rs.smartpoultryfarm.model.Contact;
 import com.rs.smartpoultryfarm.model.Feed;
-import com.rs.smartpoultryfarm.model.AgroData;
 import com.rs.smartpoultryfarm.remote.PermissionManager;
 import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.Constants;
 import com.rs.smartpoultryfarm.util.SharedPreference;
-
 import java.util.Collections;
 
 /**
@@ -50,15 +41,17 @@ public class NotifyUserReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
         dataBroadcaster = LocalBroadcastManager.getInstance(context);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.getDataFeedURL(2),
-                response -> {
-                    AgroData agroData = new GsonBuilder().create().fromJson(response, AgroData.class);
-                    if (agroData == null) return;
-                    if (agroData.getCode() == 404) return;
-                    if (agroData.getFeeds() == null || agroData.getFeeds().isEmpty()) return;
-                    Collections.reverse(agroData.getFeeds());
+        SharedPreference sp = new SharedPreference(context);
+        if(!sp.isLoggedIn()) return;
+        API.invoke(context, Request.Method.GET,
+                API.getDataFeedURL(sp.channelData(SharedPreference.CHANNEL_ID_SP_KEY), sp.channelData(SharedPreference.CHANNEL_KEY_SP_KEY), 2),
+                data -> {
+                    if (data == null) return;
+                    if (data.getCode() == 404) return;
+                    if (data.getFeeds() == null || data.getFeeds().isEmpty()) return;
+                    Collections.reverse(data.getFeeds());
 
-                    Feed latestFeed = agroData.getFeeds().get(0);
+                    Feed latestFeed = data.getFeeds().get(0);
                     if (latestFeed == null) return;
 
                     String temperatureStatus = "";
@@ -66,14 +59,14 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                     String airQualityStatus = "";
 
                     Intent tokenIntent = new Intent(Constants.DATA_LISTENER_KEY);
-                    tokenIntent.putExtra(Constants.DATA_INTENT_KEY, agroData);
+                    tokenIntent.putExtra(Constants.DATA_INTENT_KEY, data);
                     dataBroadcaster.sendBroadcast(tokenIntent);
 
                     /**
                      *  Checking Temperature
                      **/
                     String getNewTemperature = AppExtensions.formatValue(latestFeed.getFieldOne(), null);
-                    String getOldTemperature = AppExtensions.formatValue(new SharedPreference(context).feedData(SharedPreference.TEMP_VALUE_SP_KEY).toString(), null);
+                    String getOldTemperature = AppExtensions.formatValue(sp.feedData(SharedPreference.TEMP_VALUE_SP_KEY).toString(), null);
                     if (getNewTemperature != null) {
                         double newTemperature = Double.parseDouble(getNewTemperature);
                         double oldTemperature = Double.parseDouble(getOldTemperature);
@@ -84,7 +77,7 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                                 temperatureStatus = AppExtensions.getString(R.string.high) + " temperature, its about " + getNewTemperature + " " + AppExtensions.getString(R.string.temperatureUnit);
                             }
 
-                            new SharedPreference(context).feedData(SharedPreference.TEMP_VALUE_SP_KEY, (float) newTemperature);
+                            sp.feedData(SharedPreference.TEMP_VALUE_SP_KEY, (float) newTemperature);
                         }
                     }
 
@@ -92,7 +85,7 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                      *  Checking Humidity
                      **/
                     String getNewHumidity = AppExtensions.formatValue(latestFeed.getFieldTwo(), null);
-                    String getOldHumidity = AppExtensions.formatValue(new SharedPreference(context).feedData(SharedPreference.HUMIDITY_VALUE_SP_KEY).toString(), null);
+                    String getOldHumidity = AppExtensions.formatValue(sp.feedData(SharedPreference.HUMIDITY_VALUE_SP_KEY).toString(), null);
                     if (getNewHumidity != null) {
                         double newHumidity = Double.parseDouble(getNewHumidity);
                         double oldHumidity = Double.parseDouble(getOldHumidity);
@@ -103,7 +96,7 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                                 humidityStatus = AppExtensions.getString(R.string.high) + " humidity, its about " + getNewHumidity + " " + AppExtensions.getString(R.string.humidityUnit);
                             }
 
-                            new SharedPreference(context).feedData(SharedPreference.HUMIDITY_VALUE_SP_KEY, (float) newHumidity);
+                            sp.feedData(SharedPreference.HUMIDITY_VALUE_SP_KEY, (float) newHumidity);
                         }
                     }
 
@@ -111,7 +104,7 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                      *  Checking Air Quality
                      **/
                     String getNewAirQuality = AppExtensions.formatValue(latestFeed.getFieldThree(), null);
-                    String getOldAirQuality = AppExtensions.formatValue(new SharedPreference(context).feedData(SharedPreference.AIR_QUALITY_VALUE_SP_KEY).toString(), null);
+                    String getOldAirQuality = AppExtensions.formatValue(sp.feedData(SharedPreference.AIR_QUALITY_VALUE_SP_KEY).toString(), null);
                     if (getNewAirQuality != null) {
                         double newAirQuality = Double.parseDouble(getNewAirQuality);
                         double oldAirQuality = Double.parseDouble(getOldAirQuality);
@@ -128,7 +121,7 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                                 airQualityStatus = "Air Quality (" + AppExtensions.getString(R.string.hazardous) + "), its about " + getNewAirQuality + " " + AppExtensions.getString(R.string.airQualityUnit);
                             }
 
-                            new SharedPreference(context).feedData(SharedPreference.AIR_QUALITY_VALUE_SP_KEY, (float) newAirQuality);
+                            sp.feedData(SharedPreference.AIR_QUALITY_VALUE_SP_KEY, (float) newAirQuality);
                         }
                     }
 
@@ -145,16 +138,7 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                         sendSMS(context, "Emergency Alert !!\n\n" + message);
                         showNotification(context, "Emergency Alert !!", message.toString());
                     }
-                },
-                Throwable::printStackTrace);
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-        );
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
+                });
     }
 
     public void startNotifyService(Context context) {

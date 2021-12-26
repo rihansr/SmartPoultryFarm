@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class AgroData implements Serializable {
+public class PoultryData implements Serializable {
 
     @SerializedName("status")
     @Expose
@@ -17,7 +17,7 @@ public class AgroData implements Serializable {
     @Expose
     private List<Feed> feeds = null;
 
-    public AgroData() {}
+    public PoultryData() {}
 
     public Integer getCode() {
         return code == null ? 200 : code;

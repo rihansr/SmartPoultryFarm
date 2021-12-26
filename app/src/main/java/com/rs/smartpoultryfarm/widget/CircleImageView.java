@@ -1,4 +1,4 @@
-package com.rs.smartpoultryfarm.wiget;
+package com.rs.smartpoultryfarm.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

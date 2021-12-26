@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_Background"
+    tools:context=".activity.LoginActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_Double_Extra_Large">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/id.Input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_Large"
+            android:background="@drawable/shape_inputs"
+            android:digits="0123456789"
+            android:hint="@string/id_Hint"
+            android:inputType="number"
+            android:maxLength="7"
+            android:paddingStart="@dimen/padding_Large"
+            android:paddingTop="@dimen/padding_Medium"
+            android:paddingEnd="@dimen/padding_Large"
+            android:paddingBottom="@dimen/padding_Medium"
+            android:textColor="@color/text_Color_Dark"
+            android:textColorHint="@color/text_Hint_Color"
+            android:textSize="@dimen/text_Size_Small" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_Medium"
+            android:background="@drawable/shape_inputs"
+            android:paddingStart="@dimen/padding_Large"
+            tools:ignore="RtlSymmetry">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/key.Input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/passwordIconHolder"
+                android:background="@android:color/transparent"
+                android:hint="@string/key_Hint"
+                android:inputType="textPassword"
+                android:maxLength="16"
+                android:paddingTop="@dimen/padding_Medium"
+                android:paddingBottom="@dimen/padding_Medium"
+                android:textAllCaps="true"
+                android:textColor="@color/text_Color_Dark"
+                android:textColorHint="@color/text_Hint_Color"
+                android:textSize="@dimen/text_Size_Small" />
+
+            <FrameLayout
+                android:id="@+id/passwordIconHolder"
+                android:layout_width="@dimen/icon_Size_Large"
+                android:layout_height="@dimen/icon_Size_Small"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:focusable="true">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/password.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:paddingEnd="@dimen/padding_Medium"
+                    app:srcCompat="@drawable/ic_password_visible_on"
+                    tools:ignore="RtlSymmetry" />
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/login.Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_Height_Small"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_Extra_Large"
+            android:background="@drawable/shape_button"
+            android:minWidth="@dimen/button_Width_Small"
+            android:paddingStart="@dimen/padding_Large"
+            android:paddingEnd="@dimen/padding_Large"
+            android:text="@string/login"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_Size_Small"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>

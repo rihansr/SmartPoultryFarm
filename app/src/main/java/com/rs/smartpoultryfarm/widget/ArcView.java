@@ -1,4 +1,4 @@
-package com.rs.smartpoultryfarm.wiget;
+package com.rs.smartpoultryfarm.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
