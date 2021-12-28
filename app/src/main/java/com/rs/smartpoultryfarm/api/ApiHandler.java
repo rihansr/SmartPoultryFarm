@@ -1,15 +1,14 @@
 package com.rs.smartpoultryfarm.api;
 
 import android.content.Context;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.GsonBuilder;
-import com.rs.smartpoultryfarm.model.PoultryData;
 
-public class API {
+public class ApiHandler {
+
     public static String DATA_CHANNEL_ID = "1562231";
     public static String DATA_READ_API_KEY = "ET9H1SY3HR9ZNLL5";
     public static String CONTROLLER_CHANNEL_ID = "1567504";
@@ -31,9 +30,9 @@ public class API {
                 + "&field2=" + (lightTwoState ? "1" : "0");
     }
 
-    public static void invoke(Context context, int method, String url, OnDataListener listener) {
+    public static <T> void invoke(Context context, Class<T> type, int method, String url, OnDataListener<T> listener) {
         StringRequest stringRequest = new StringRequest(method, url,
-                response -> listener.onData(new GsonBuilder().create().fromJson(response, PoultryData.class)),
+                response -> listener.onData(new GsonBuilder().create().fromJson(response, type)),
                 error -> {
                     listener.onData(null);
                     error.printStackTrace();
@@ -48,7 +47,7 @@ public class API {
         requestQueue.add(stringRequest);
     }
 
-    public interface OnDataListener {
-        void onData(PoultryData data);
+    public interface OnDataListener<T> {
+        void onData(T data);
     }
 }

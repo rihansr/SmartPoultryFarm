@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-
 import com.rs.smartpoultryfarm.activity.LoginActivity;
 import com.rs.smartpoultryfarm.activity.MainActivity;
 import com.rs.smartpoultryfarm.activity.SplashActivity;

@@ -6,8 +6,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Feed implements Serializable {
-    @Expose
     @SerializedName("field1")
+    @Expose
     private String field1;
     @SerializedName("field2")
     @Expose
@@ -15,6 +15,9 @@ public class Feed implements Serializable {
     @SerializedName("field3")
     @Expose
     private String field3;
+    @SerializedName("field4")
+    @Expose
+    private String field4;
 
     public Feed() {}
 
@@ -24,15 +27,24 @@ public class Feed implements Serializable {
         this.field3 = String.valueOf(airQuality);
     }
 
-    public String getFieldOne() {
+    public Feed(String light1, String light2) {
+        this.field1 = String.valueOf(light1);
+        this.field2 = String.valueOf(light2);
+    }
+
+    public String getField1() {
         return field1;
     }
 
-    public String getFieldTwo() {
+    public String getField2() {
         return field2;
     }
 
-    public String getFieldThree() {
+    public String getField3() {
         return field3;
+    }
+
+    public String getField4() {
+        return field4;
     }
 }

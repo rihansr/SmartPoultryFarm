@@ -1,5 +1,6 @@
 package com.rs.smartpoultryfarm.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
@@ -46,6 +47,7 @@ public class CustomSnackBar {
         this.duration = duration == null ? Duration.SHORT : duration;
     }
 
+    @SuppressLint("RestrictedApi")
     public void show(){
         switch (duration){
             case SHORT : snackbar = Snackbar.make(anchor, message, Snackbar.LENGTH_SHORT);
@@ -57,12 +59,9 @@ public class CustomSnackBar {
         }
 
         if(action != null){
-            snackbar.setAction(action, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mOnDismissListener != null) mOnDismissListener.onDismiss(snackbar);
-                    else snackbar.dismiss();
-                }
+            snackbar.setAction(action, view -> {
+                if (mOnDismissListener != null) mOnDismissListener.onDismiss(snackbar);
+                else snackbar.dismiss();
             }).setActionTextColor(Color.WHITE);
         }
 
@@ -71,7 +70,7 @@ public class CustomSnackBar {
         TextView textView = s_layout.findViewById(R.id.snackbar_text);
         textView.setTextColor(Color.WHITE);
 
-        s_layout.setBackground(mContext.getResources().getDrawable(R.drawable.shape_snackbar, null));
+        s_layout.setBackground(AppExtensions.getDrawable(R.drawable.shape_snackbar));
 
         snackbar.show();
     }

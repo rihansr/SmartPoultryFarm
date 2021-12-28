@@ -2,7 +2,6 @@ package com.rs.smartpoultryfarm.activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -17,15 +16,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.github.ybq.android.spinkit.style.Circle;
-import com.google.gson.GsonBuilder;
 import com.rs.smartpoultryfarm.R;
-import com.rs.smartpoultryfarm.api.API;
+import com.rs.smartpoultryfarm.api.ApiHandler;
 import com.rs.smartpoultryfarm.controller.AppController;
 import com.rs.smartpoultryfarm.fragment.AddContactFragment;
 import com.rs.smartpoultryfarm.fragment.ContactsFragment;
@@ -93,16 +87,16 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         new NotifyUserReceiver().startNotifyService(this);
 
-        lightOneSwitch.setText(AppExtensions.getString(sp.controllersState(SharedPreference.LIGHT_ONE_STATE_SP_KEY)
+        /*lightOneSwitch.setText(AppExtensions.getString(sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY).getField1().equals("1")
                 ? R.string.on
                 : R.string.off)
-        );
+        );*/
         lightOneSwitch.setOnClickListener(view -> updateControlState(lightOneSwitch));
 
-        lightTwoSwitch.setText(AppExtensions.getString(sp.controllersState(SharedPreference.LIGHT_TWO_STATE_SP_KEY)
+        /*lightTwoSwitch.setText(AppExtensions.getString(sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY).getField2().equals("1")
                 ? R.string.on
                 : R.string.off)
-        );
+        );*/
         lightTwoSwitch.setOnClickListener(view -> updateControlState(lightTwoSwitch));
 
         getFeedData();
@@ -204,12 +198,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      * Get data from https://thingspeak.com/
      **/
     private void getFeedData() {
-        double humidity = sp.feedData(SharedPreference.HUMIDITY_VALUE_SP_KEY);
-        double temperature = sp.feedData(SharedPreference.TEMP_VALUE_SP_KEY);
-        double airQuality = sp.feedData(SharedPreference.AIR_QUALITY_VALUE_SP_KEY);
-
+        Feed lastFeed = sp.feedData(SharedPreference.POULTRY_DATA_SP_KEY);
         PoultryData poultryData = new PoultryData();
-        poultryData.setFeeds(Collections.singletonList(new Feed(temperature, humidity, airQuality)));
+        poultryData.setFeeds(Collections.singletonList(lastFeed));
         dataSetup(poultryData);
 
         dataModel.getRefresh().observe(MainActivity.this, o -> dataModel.getHealthData().observe(MainActivity.this, data -> {
@@ -222,28 +213,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void getControllersState() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, API.getControllerFeedURL(),
-                response -> {
-                    Feed feed = new GsonBuilder().create().fromJson(response, Feed.class);
-                    if (feed == null) return;
+        ApiHandler.invoke(this, Feed.class, Request.Method.GET, ApiHandler.getControllerFeedURL(), feed -> {
+            if (feed == null) return;
 
-                    int controlOneState = Integer.parseInt(AppExtensions.formatValue(feed.getFieldOne(), "0"));
-                    lightOneSwitch.setText(AppExtensions.getString(controlOneState == 1 ? R.string.on : R.string.off));
-                    sp.controllersState(SharedPreference.LIGHT_ONE_STATE_SP_KEY, controlOneState == 1);
+            String controlOneState = AppExtensions.formatValue(feed.getField1(), "0");
+            lightOneSwitch.setText(AppExtensions.getString(controlOneState.equals("1") ? R.string.on : R.string.off));
 
-                    int controlTwoState = Integer.parseInt(AppExtensions.formatValue(feed.getFieldTwo(), "0"));
-                    lightTwoSwitch.setText(AppExtensions.getString(controlTwoState == 1 ? R.string.on : R.string.off));
-                    sp.controllersState(SharedPreference.LIGHT_TWO_STATE_SP_KEY, controlTwoState == 1);
-                },
-                Throwable::printStackTrace);
+            String controlTwoState = AppExtensions.formatValue(feed.getField2(), "0");
+            lightTwoSwitch.setText(AppExtensions.getString(controlTwoState.equals("1") ? R.string.on : R.string.off));
 
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-        );
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+            sp.feedData(SharedPreference.CONTROLLER_STATE_SP_KEY, new Feed(controlOneState, controlTwoState));
+        });
     }
 
     /**
@@ -267,15 +247,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         /**
          * Temperature
          **/
-        String getLastTemp = AppExtensions.formatValue(lastFeed == null ? null : lastFeed.getFieldOne(), null);
+        String getLastTemp = AppExtensions.formatValue(lastFeed == null ? null : lastFeed.getField1(), null);
         if(getLastTemp != null){
             lastTemperatureValue.setVisibility(View.VISIBLE);
             lastTemperatureValue.setText(String.format("%s %s", getLastTemp, AppExtensions.getString(R.string.temperatureUnit)));
         }
         else lastTemperatureValue.setVisibility(View.GONE);
 
-        temperatureValue.setText(AppExtensions.formatValue(currentFeed.getFieldOne(), getResources().getString(R.string.nullSymbol)));
-        String getCurTemp = AppExtensions.formatValue(currentFeed.getFieldOne(), null);
+        temperatureValue.setText(AppExtensions.formatValue(currentFeed.getField1(), getResources().getString(R.string.nullSymbol)));
+        String getCurTemp = AppExtensions.formatValue(currentFeed.getField1(), null);
 
         if(getCurTemp != null){
             double temp = Double.parseDouble(getCurTemp);
@@ -293,15 +273,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         /**
          * Humidity
          **/
-        String getLastHumidity = AppExtensions.formatValue(lastFeed == null ? null : lastFeed.getFieldTwo(), null);
+        String getLastHumidity = AppExtensions.formatValue(lastFeed == null ? null : lastFeed.getField2(), null);
         if(getLastHumidity != null){
             lastHumidityValue.setVisibility(View.VISIBLE);
             lastHumidityValue.setText(String.format("%s %s", getLastHumidity, AppExtensions.getString(R.string.humidityUnit)));
         }
         else lastHumidityValue.setVisibility(View.GONE);
 
-        humidityValue.setText(AppExtensions.formatValue(currentFeed.getFieldTwo(), getResources().getString(R.string.nullSymbol)));
-        String getCurHumidity = AppExtensions.formatValue(currentFeed.getFieldTwo(), null);
+        humidityValue.setText(AppExtensions.formatValue(currentFeed.getField2(), getResources().getString(R.string.nullSymbol)));
+        String getCurHumidity = AppExtensions.formatValue(currentFeed.getField2(), null);
         if(getCurHumidity != null) {
             double humidity = Double.parseDouble(getCurHumidity);
             if(humidity < Constants.HUMIDITY_MIN_VALUE){
@@ -318,15 +298,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         /**
          * Air Quality
          **/
-        String getLastMoisture = AppExtensions.formatValue(lastFeed == null ? null : lastFeed.getFieldThree(), null);
+        String getLastMoisture = AppExtensions.formatValue(lastFeed == null ? null : lastFeed.getField3(), null);
         if(getLastMoisture != null){
             lastAirQualityValue.setVisibility(View.VISIBLE);
             lastAirQualityValue.setText(String.format("%s %s", getLastMoisture, AppExtensions.getString(R.string.airQualityUnit)));
         }
         else lastAirQualityValue.setVisibility(View.GONE);
 
-        airQualityValue.setText(AppExtensions.formatValue(currentFeed.getFieldThree(), getResources().getString(R.string.nullSymbol)));
-        String getCurAirQuality = AppExtensions.formatValue(currentFeed.getFieldThree(), null);
+        airQualityValue.setText(AppExtensions.formatValue(currentFeed.getField3(), getResources().getString(R.string.nullSymbol)));
+        String getCurAirQuality = AppExtensions.formatValue(currentFeed.getField3(), null);
 
         if(getCurAirQuality != null){
             double airQuality = Double.parseDouble(getCurAirQuality);
@@ -358,32 +338,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         loading.setVisibility(View.VISIBLE);
         boolean lightOneState = (toggleButton == lightOneSwitch) != lightOneSwitch.getText().equals(AppExtensions.getString(R.string.on));
         boolean lightTwoState = (toggleButton == lightTwoSwitch) != lightTwoSwitch.getText().equals(AppExtensions.getString(R.string.on));
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, API.updateControllerFeedURL(
+
+        ApiHandler.invoke(this, String.class, Request.Method.POST, ApiHandler.updateControllerFeedURL(
                 lightOneState,
                 lightTwoState
-        ), response ->
-        {
+        ), state -> {
             loading.setVisibility(View.GONE);
-            if (response == null || response.equals("0")) return;
+            if (state == null || state.equals("0")) return;
             if (toggleButton == lightOneSwitch)
                 toggleButton.setText(AppExtensions.getString(lightOneState ? R.string.on : R.string.off));
             else if (toggleButton == lightTwoSwitch)
                 toggleButton.setText(AppExtensions.getString(lightTwoState ? R.string.on : R.string.off));
-            sp.controllersState(SharedPreference.LIGHT_ONE_STATE_SP_KEY, lightOneState);
-            sp.controllersState(SharedPreference.LIGHT_TWO_STATE_SP_KEY, lightTwoState);
-        }
-                , error -> {
-            loading.setVisibility(View.GONE);
-            error.printStackTrace();
+
+            sp.feedData(SharedPreference.CONTROLLER_STATE_SP_KEY, new Feed(lightOneState ? "1" : "0", lightTwoState  ? "1" : "0"));
         });
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-        );
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
     }
 
     /**
@@ -443,22 +411,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         notificationAlertDialog.setButton(AlertDialog.BUTTON_POSITIVE, (getResources().getString(R.string.allow)+"          "),
                 (dialog, which) -> {
                     dialog.dismiss();
-
-                    Intent intent = new Intent();
-                    intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-
-                    /**
-                     * for Android 5-7
-                     **/
-                    intent.putExtra("app_package", getPackageName());
-                    intent.putExtra("app_uid", getApplicationInfo().uid);
-
-                    /**
-                     * for Android 8 and above
-                     **/
-                    intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
-
-                    startActivity(intent);
+                    new PermissionManager().goToNotificationPermissionSetting();
                 });
 
         notificationAlertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, ("          "+getResources().getString(R.string.forbid)),

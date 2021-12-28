@@ -1,22 +1,20 @@
 package com.rs.smartpoultryfarm.adapter;
 
 import static com.rs.smartpoultryfarm.util.AppExtensions.getString;
-
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.model.Contact;
 import com.rs.smartpoultryfarm.util.SharedPreference;
-
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressLint("NotifyDataSetChanged")
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
 
     private List<Contact> contacts = new ArrayList<>();

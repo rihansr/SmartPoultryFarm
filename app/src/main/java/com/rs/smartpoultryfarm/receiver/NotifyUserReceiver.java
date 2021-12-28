@@ -20,9 +20,10 @@ import com.android.volley.Request;
 import com.rs.smartpoultryfarm.BuildConfig;
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.activity.MainActivity;
-import com.rs.smartpoultryfarm.api.API;
+import com.rs.smartpoultryfarm.api.ApiHandler;
 import com.rs.smartpoultryfarm.model.Contact;
 import com.rs.smartpoultryfarm.model.Feed;
+import com.rs.smartpoultryfarm.model.PoultryData;
 import com.rs.smartpoultryfarm.remote.PermissionManager;
 import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.Constants;
@@ -42,17 +43,18 @@ public class NotifyUserReceiver extends BroadcastReceiver {
         dataBroadcaster = LocalBroadcastManager.getInstance(context);
 
         SharedPreference sp = new SharedPreference(context);
-        if(!sp.isLoggedIn()) return;
-        API.invoke(context, Request.Method.GET,
-                API.getDataFeedURL(sp.channelData(SharedPreference.CHANNEL_ID_SP_KEY), sp.channelData(SharedPreference.CHANNEL_KEY_SP_KEY), 2),
+        if (!sp.isLoggedIn()) return;
+        ApiHandler.invoke(context, PoultryData.class, Request.Method.GET,
+                ApiHandler.getDataFeedURL(sp.channelData(SharedPreference.CHANNEL_ID_SP_KEY), sp.channelData(SharedPreference.CHANNEL_KEY_SP_KEY), 2),
                 data -> {
                     if (data == null) return;
                     if (data.getCode() == 404) return;
                     if (data.getFeeds() == null || data.getFeeds().isEmpty()) return;
                     Collections.reverse(data.getFeeds());
 
-                    Feed latestFeed = data.getFeeds().get(0);
-                    if (latestFeed == null) return;
+                    Feed curFeed = data.getFeeds().get(0);
+                    Feed lastFeed = sp.feedData(SharedPreference.POULTRY_DATA_SP_KEY);
+                    if (curFeed == null) return;
 
                     String temperatureStatus = "";
                     String humidityStatus = "";
@@ -65,50 +67,43 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                     /**
                      *  Checking Temperature
                      **/
-                    String getNewTemperature = AppExtensions.formatValue(latestFeed.getFieldOne(), null);
-                    String getOldTemperature = AppExtensions.formatValue(sp.feedData(SharedPreference.TEMP_VALUE_SP_KEY).toString(), null);
+                    String getNewTemperature = AppExtensions.formatValue(curFeed.getField1(), null);
+                    String getOldTemperature = AppExtensions.formatValue(lastFeed.getField1(), null);
                     if (getNewTemperature != null) {
                         double newTemperature = Double.parseDouble(getNewTemperature);
-                        double oldTemperature = Double.parseDouble(getOldTemperature);
-                        if (newTemperature != oldTemperature) {
+                        if (getOldTemperature == null || newTemperature != Double.parseDouble(getOldTemperature)) {
                             if (newTemperature < Constants.TEMPERATURE_MIN_VALUE) {
                                 temperatureStatus = AppExtensions.getString(R.string.low) + " temperature, its about " + getNewTemperature + " " + AppExtensions.getString(R.string.temperatureUnit);
                             } else if (newTemperature > Constants.TEMPERATURE_MAX_VALUE) {
                                 temperatureStatus = AppExtensions.getString(R.string.high) + " temperature, its about " + getNewTemperature + " " + AppExtensions.getString(R.string.temperatureUnit);
                             }
-
-                            sp.feedData(SharedPreference.TEMP_VALUE_SP_KEY, (float) newTemperature);
                         }
                     }
 
                     /**
                      *  Checking Humidity
                      **/
-                    String getNewHumidity = AppExtensions.formatValue(latestFeed.getFieldTwo(), null);
-                    String getOldHumidity = AppExtensions.formatValue(sp.feedData(SharedPreference.HUMIDITY_VALUE_SP_KEY).toString(), null);
+                    String getNewHumidity = AppExtensions.formatValue(curFeed.getField2(), null);
+                    String getOldHumidity = AppExtensions.formatValue(lastFeed.getField2(), null);
                     if (getNewHumidity != null) {
                         double newHumidity = Double.parseDouble(getNewHumidity);
-                        double oldHumidity = Double.parseDouble(getOldHumidity);
-                        if (newHumidity != oldHumidity) {
+                        if (getOldHumidity == null || newHumidity != Double.parseDouble(getOldHumidity)) {
                             if (newHumidity < Constants.HUMIDITY_MIN_VALUE) {
                                 humidityStatus = AppExtensions.getString(R.string.low) + " humidity, its about " + getNewHumidity + " " + AppExtensions.getString(R.string.humidityUnit);
                             } else if (newHumidity > Constants.HUMIDITY_MAX_VALUE) {
                                 humidityStatus = AppExtensions.getString(R.string.high) + " humidity, its about " + getNewHumidity + " " + AppExtensions.getString(R.string.humidityUnit);
                             }
-
-                            sp.feedData(SharedPreference.HUMIDITY_VALUE_SP_KEY, (float) newHumidity);
                         }
                     }
 
                     /**
                      *  Checking Air Quality
                      **/
-                    String getNewAirQuality = AppExtensions.formatValue(latestFeed.getFieldThree(), null);
-                    String getOldAirQuality = AppExtensions.formatValue(sp.feedData(SharedPreference.AIR_QUALITY_VALUE_SP_KEY).toString(), null);
+                    String getNewAirQuality = AppExtensions.formatValue(curFeed.getField3(), null);
+                    String getOldAirQuality = AppExtensions.formatValue(lastFeed.getField3(), null);
                     if (getNewAirQuality != null) {
                         double newAirQuality = Double.parseDouble(getNewAirQuality);
-                        double oldAirQuality = Double.parseDouble(getOldAirQuality);
-                        if (newAirQuality != oldAirQuality) {
+                        if (getOldAirQuality == null || newAirQuality != Double.parseDouble(getOldAirQuality)) {
                             if (newAirQuality >= 51 && newAirQuality < 101) {
                                 airQualityStatus = "Air Quality (" + AppExtensions.getString(R.string.moderate) + "), its about " + getNewAirQuality + " " + AppExtensions.getString(R.string.airQualityUnit);
                             } else if (newAirQuality >= 101 && newAirQuality < 151) {
@@ -120,20 +115,19 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                             } else if (newAirQuality >= 301 && newAirQuality <= 500) {
                                 airQualityStatus = "Air Quality (" + AppExtensions.getString(R.string.hazardous) + "), its about " + getNewAirQuality + " " + AppExtensions.getString(R.string.airQualityUnit);
                             }
-
-                            sp.feedData(SharedPreference.AIR_QUALITY_VALUE_SP_KEY, (float) newAirQuality);
                         }
                     }
+
+                    sp.feedData(SharedPreference.POULTRY_DATA_SP_KEY, curFeed);
 
                     /**
                      * Send sms to emergency contact
                      **/
                     if (!temperatureStatus.isEmpty() || !humidityStatus.isEmpty() || !airQualityStatus.isEmpty()) {
-                        StringBuilder message = new StringBuilder().append(
-                                temperatureStatus
-                        ).append(temperatureStatus.isEmpty() || humidityStatus.isEmpty() ? humidityStatus : "\n" + humidityStatus)
-                                .
-                                        append(humidityStatus.isEmpty() || airQualityStatus.isEmpty() ? airQualityStatus : "\n" + airQualityStatus);
+                        StringBuilder message = new StringBuilder()
+                                .append(temperatureStatus)
+                                .append(temperatureStatus.isEmpty() || humidityStatus.isEmpty() ? humidityStatus : "\n" + humidityStatus)
+                                .append(temperatureStatus.isEmpty() && humidityStatus.isEmpty() || airQualityStatus.isEmpty() ? airQualityStatus : "\n" + airQualityStatus);
 
                         sendSMS(context, "Emergency Alert !!\n\n" + message);
                         showNotification(context, "Emergency Alert !!", message.toString());

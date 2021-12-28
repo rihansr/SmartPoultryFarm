@@ -2,20 +2,17 @@ package com.rs.smartpoultryfarm.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.controller.AppController;
 import com.rs.smartpoultryfarm.receiver.NetworkStatusChangeReceiver;
 import com.rs.smartpoultryfarm.util.Constants;
 import com.rs.smartpoultryfarm.util.SharedPreference;
-
 import static android.net.ConnectivityManager.CONNECTIVITY_ACTION;
 
 @SuppressLint("CustomSplashScreen")

@@ -1,7 +1,6 @@
 package com.rs.smartpoultryfarm.activity;
 
 import static android.net.ConnectivityManager.CONNECTIVITY_ACTION;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,30 +10,25 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
-
 import com.android.volley.Request;
 import com.rs.smartpoultryfarm.R;
-import com.rs.smartpoultryfarm.api.API;
-import com.rs.smartpoultryfarm.model.AgroDataModel;
+import com.rs.smartpoultryfarm.api.ApiHandler;
+import com.rs.smartpoultryfarm.model.PoultryData;
 import com.rs.smartpoultryfarm.receiver.NetworkStatusChangeReceiver;
 import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.Constants;
 import com.rs.smartpoultryfarm.util.CustomSnackBar;
 import com.rs.smartpoultryfarm.util.SharedPreference;
-
-import java.util.Collections;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
@@ -143,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
         /**
          * Get data from https://thingspeak.com/
          **/
-        API.invoke(LoginActivity.this, Request.Method.GET, API.getDataFeedURL(id, key, 1), data -> {
+        ApiHandler.invoke(LoginActivity.this, PoultryData.class, Request.Method.GET, ApiHandler.getDataFeedURL(id, key, 1), data -> {
             progressDialog.dismiss();
             if (data == null || data.getFeeds().size() == 0 || data.getCode() == 404) {
                 new CustomSnackBar(rootLayout, R.string.dataNotExist, R.string.retry, CustomSnackBar.Duration.SHORT).show();

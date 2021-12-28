@@ -2,19 +2,12 @@ package com.rs.smartpoultryfarm.model;
 
 import android.app.Application;
 import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.GsonBuilder;
-import com.rs.smartpoultryfarm.api.API;
+import com.rs.smartpoultryfarm.api.ApiHandler;
 import com.rs.smartpoultryfarm.util.SharedPreference;
 
 public class AgroDataModel extends AndroidViewModel {
@@ -52,8 +45,8 @@ public class AgroDataModel extends AndroidViewModel {
 
         private void LoadData() {
             SharedPreference sp = new SharedPreference(context);
-            API.invoke(context, Request.Method.GET,
-                    API.getDataFeedURL(sp.channelData(SharedPreference.CHANNEL_ID_SP_KEY), sp.channelData(SharedPreference.CHANNEL_KEY_SP_KEY), 2),
+            ApiHandler.invoke(context, PoultryData.class, Request.Method.GET,
+                    ApiHandler.getDataFeedURL(sp.channelData(SharedPreference.CHANNEL_ID_SP_KEY), sp.channelData(SharedPreference.CHANNEL_KEY_SP_KEY), 2),
                     data -> {
                         if (data == null) return;
                         if (data.getCode() == 404) return;

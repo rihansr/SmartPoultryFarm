@@ -10,10 +10,10 @@ public class Constants {
     public static String        CONTACT_BUNDLE_KEY = "contactBundleKey";
 
     /** Data Min Max Value **/
-    public static final double  TEMPERATURE_MIN_VALUE = 30;
-    public static final double  TEMPERATURE_MAX_VALUE = 100;
-    public static final long    HUMIDITY_MIN_VALUE = 30;
-    public static final long    HUMIDITY_MAX_VALUE = 100;
+    public static final double  TEMPERATURE_MIN_VALUE = 65;
+    public static final double  TEMPERATURE_MAX_VALUE = 95;
+    public static final long    HUMIDITY_MIN_VALUE = 60;
+    public static final long    HUMIDITY_MAX_VALUE = 80;
 
     /** Timer **/
     public static final long    SPLASH_TIME_OUT = 2000;

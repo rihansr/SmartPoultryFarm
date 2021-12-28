@@ -8,14 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.adapter.ContactAdapter;
 import com.rs.smartpoultryfarm.controller.AppController;
@@ -23,7 +21,6 @@ import com.rs.smartpoultryfarm.model.Contact;
 import com.rs.smartpoultryfarm.remote.PermissionManager;
 import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.Constants;
-
 import java.util.ArrayList;
 import java.util.List;
 

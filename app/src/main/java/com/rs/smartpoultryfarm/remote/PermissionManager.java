@@ -4,14 +4,12 @@ import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.SEND_SMS;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
-
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -24,7 +22,6 @@ import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.controller.AppController;
 import com.rs.smartpoultryfarm.fragment.AlertDialogFragment;
 import com.rs.smartpoultryfarm.util.AppExtensions;
-
 import java.util.List;
 
 public class PermissionManager {

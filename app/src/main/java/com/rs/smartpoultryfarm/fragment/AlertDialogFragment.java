@@ -6,14 +6,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
-
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.controller.AppController;
 import com.rs.smartpoultryfarm.util.AppExtensions;
