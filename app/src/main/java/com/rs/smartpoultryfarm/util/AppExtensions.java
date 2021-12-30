@@ -71,4 +71,8 @@ public class AppExtensions {
     public static Drawable getDrawable(int id){
         return ContextCompat.getDrawable(AppController.getActivity(), id);
     }
+
+    public static View getRootView(Dialog dialog){
+        return Objects.requireNonNull(Objects.requireNonNull(dialog).getWindow()).getDecorView().getRootView();
+    }
 }

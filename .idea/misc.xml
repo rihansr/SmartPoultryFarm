@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/app_logo_mini.xml" value="0.290625" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/ic_add.xml" value="0.290625" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/ic_add_contact.xml" value="0.290625" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/ic_emergency_contact.xml" value="0.290625" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/ic_logout.xml" value="0.290625" />
@@ -16,6 +18,8 @@
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/activity_login.xml" value="0.25815217391304346" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/activity_main.xml" value="0.19927536231884058" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_add_contact.xml" value="0.19927536231884058" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_add_controller.xml" value="0.24139492753623187" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_add_controller_channel.xml" value="0.19067028985507245" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/menu/menu.xml" value="0.27447916666666666" />
       </map>
     </option>

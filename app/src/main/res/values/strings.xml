@@ -8,6 +8,7 @@
     <string name="temperature">TEMPERATURE</string>
     <string name="humidity">Humidity</string>
     <string name="airQuality">Air Quality</string>
+    <string name="waterHeight">Water Height</string>
     <string name="good">Good</string>
     <string name="moderate">Moderate</string>
     <string name="unhealthyForSensitiveGroups">Unhealthy for Sensitive Groups</string>
@@ -19,12 +20,15 @@
     <string name="low">Low</string>
     <string name="lightOne">Light One</string>
     <string name="lightTwo">Light Two</string>
+    <string name="lightThree">Light Three</string>
+    <string name="lightFour">Light Four</string>
     <string name="on">ON</string>
     <string name="off">OFF</string>
     <string name="name">Name</string>
     <string name="number">Number</string>
     <string name="contacts">Phone Contacts</string>
     <string name="addContact">Add Contact</string>
+    <string name="addController">Add Controller</string>
     <string name="emergencyContact">Emergency Contact</string>
     <string name="contactPermission">Contacts Permission</string>
     <string name="smsPermission">SMS Permission</string>
@@ -38,11 +42,14 @@
     <string name="nullSymbol">Ø</string>
     <string name="humidityUnit">%</string>
     <string name="airQualityUnit">μg/m³</string>
+    <string name="waterHeightUnit">cm</string>
     <string name="zero">0</string>
 
     <!--Hints-->
     <string name="id_Hint">Channel ID</string>
     <string name="key_Hint">Key</string>
+    <string name="readKey_Hint">Read Key</string>
+    <string name="writeKey_Hint">Write Key</string>
 
     <!--Button Title-->
     <string name="retry">Retry</string>
@@ -50,6 +57,7 @@
     <string name="allow">Allow Now</string>
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>
+    <string name="update">Update</string>
     <string name="edit">Edit</string>
     <string name="addNew">Add New</string>
     <string name="remove">Remove</string>

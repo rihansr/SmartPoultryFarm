@@ -43,6 +43,13 @@ public class Channel implements Serializable {
     @Expose
     private int last_entry_id;
 
+    /**
+     * Additional
+     **/
+    private String channelId;
+    private String readKey;
+    private String writeKey;
+
     public Channel() {}
 
     public Channel(int id, String name, String latitude, String longitude, String field1, String field2, String field3, String field4, String field5, String created_at, String updated_at, int last_entry_id) {
@@ -59,6 +66,12 @@ public class Channel implements Serializable {
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.last_entry_id = last_entry_id;
+    }
+
+    public Channel(String channelId, String readKey, String writeKey) {
+        this.channelId = channelId;
+        this.readKey = readKey;
+        this.writeKey = writeKey;
     }
 
     public int getId() {
@@ -155,5 +168,29 @@ public class Channel implements Serializable {
 
     public void setLast_entry_id(int last_entry_id) {
         this.last_entry_id = last_entry_id;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
+    public String getReadKey() {
+        return readKey;
+    }
+
+    public void setReadKey(String readKey) {
+        this.readKey = readKey;
+    }
+
+    public String getWriteKey() {
+        return writeKey;
+    }
+
+    public void setWriteKey(String writeKey) {
+        this.writeKey = writeKey;
     }
 }

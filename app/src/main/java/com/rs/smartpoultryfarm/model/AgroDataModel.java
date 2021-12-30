@@ -45,14 +45,20 @@ public class AgroDataModel extends AndroidViewModel {
 
         private void LoadData() {
             SharedPreference sp = new SharedPreference(context);
+            Channel channel = sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY);
             ApiHandler.invoke(context, PoultryData.class, Request.Method.GET,
-                    ApiHandler.getDataFeedURL(sp.channelData(SharedPreference.CHANNEL_ID_SP_KEY), sp.channelData(SharedPreference.CHANNEL_KEY_SP_KEY), 2),
-                    data -> {
-                        if (data == null) return;
-                        if (data.getCode() == 404) return;
-                        postValue(data);
-                        setValue(data);
-                        refresh.postValue(1);
+                    ApiHandler.feedsUrl(channel.getChannelId(), channel.getReadKey(), 2),
+                    new ApiHandler.OnDataListener<PoultryData>() {
+                        @Override
+                        public void onData(PoultryData data) {
+                            if (data == null) return;
+                            if (data.getCode() == 404) return;
+                            postValue(data);
+                            setValue(data);
+                            refresh.postValue(1);
+                        }
+                        @Override
+                        public void onError() {}
                     });
         }
     }

@@ -97,6 +97,7 @@ public class AddContactFragment extends DialogFragment {
             AppExtensions.requestFocus(numberInput);
             return;
         }
+
         AppExtensions.hideKeyboardInDialog();
 
         String name = Objects.requireNonNull(nameInput.getText()).toString().trim();

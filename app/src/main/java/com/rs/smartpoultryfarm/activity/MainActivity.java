@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +23,10 @@ import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.api.ApiHandler;
 import com.rs.smartpoultryfarm.controller.AppController;
 import com.rs.smartpoultryfarm.fragment.AddContactFragment;
+import com.rs.smartpoultryfarm.fragment.AddControllerFragment;
 import com.rs.smartpoultryfarm.fragment.ContactsFragment;
 import com.rs.smartpoultryfarm.fragment.EmergencyContactFragment;
+import com.rs.smartpoultryfarm.model.Channel;
 import com.rs.smartpoultryfarm.model.Feed;
 import com.rs.smartpoultryfarm.model.PoultryData;
 import com.rs.smartpoultryfarm.model.AgroDataModel;
@@ -33,8 +36,9 @@ import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.Constants;
 import com.rs.smartpoultryfarm.util.CustomSnackBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -57,8 +61,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private AppCompatTextView           airQualityValue;
     private AppCompatTextView           lastAirQualityValue;
     private AppCompatTextView           airQualityStatus;
-    private AppCompatButton             lightOneSwitch;
-    private AppCompatButton             lightTwoSwitch;
+    private AppCompatTextView           waterHeightValue;
+    private AppCompatTextView           lastWaterHeightValue;
+    private AppCompatTextView           waterHeightStatus;
+    private SwitchCompat                lightOneSwitch;
+    private LinearLayoutCompat          controllersLayout;
+    private SwitchCompat                lightTwoSwitch;
+    private SwitchCompat                lightThreeSwitch;
+    private SwitchCompat                lightFourSwitch;
     private ProgressBar                 loading;
     private AlertDialog                 notificationAlertDialog;
     private AlertDialog                 autoStartAlertDialog;
@@ -87,17 +97,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         new NotifyUserReceiver().startNotifyService(this);
 
-        /*lightOneSwitch.setText(AppExtensions.getString(sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY).getField1().equals("1")
-                ? R.string.on
-                : R.string.off)
-        );*/
-        lightOneSwitch.setOnClickListener(view -> updateControlState(lightOneSwitch));
-
-        /*lightTwoSwitch.setText(AppExtensions.getString(sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY).getField2().equals("1")
-                ? R.string.on
-                : R.string.off)
-        );*/
-        lightTwoSwitch.setOnClickListener(view -> updateControlState(lightTwoSwitch));
+        lightOneSwitch.setOnClickListener(view -> updateControllersState(lightOneSwitch));
+        lightTwoSwitch.setOnClickListener(view -> updateControllersState(lightTwoSwitch));
+        lightThreeSwitch.setOnClickListener(view -> updateControllersState(lightTwoSwitch));
+        lightFourSwitch.setOnClickListener(view -> updateControllersState(lightTwoSwitch));
 
         getFeedData();
 
@@ -111,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(mDataReceiver, new IntentFilter(Constants.DATA_LISTENER_KEY));
-
 
         /**
          *  Allow Auto Startup ->
@@ -184,8 +186,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         lastAirQualityValue = findViewById(R.id.airQuality_Last);
         airQualityStatus = findViewById(R.id.airQuality_Status);
 
+        waterHeightValue = findViewById(R.id.waterHeight_Value);
+        lastWaterHeightValue = findViewById(R.id.waterHeight_Last);
+        waterHeightStatus = findViewById(R.id.waterHeight_Status);
+
+        controllersLayout = findViewById(R.id.controllers_Layout);
         lightOneSwitch = findViewById(R.id.lightOne_Switch);
         lightTwoSwitch = findViewById(R.id.lightTwo_Switch);
+        lightThreeSwitch = findViewById(R.id.lightThree_Switch);
+        lightFourSwitch = findViewById(R.id.lightFour_Switch);
 
         loading = findViewById(R.id.loader);
         loading.setIndeterminateDrawable(new Circle());
@@ -198,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      * Get data from https://thingspeak.com/
      **/
     private void getFeedData() {
-        Feed lastFeed = sp.feedData(SharedPreference.POULTRY_DATA_SP_KEY);
+        Feed lastFeed = sp.feedData(SharedPreference.POULTRY_FEED_SP_KEY);
         PoultryData poultryData = new PoultryData();
         poultryData.setFeeds(Collections.singletonList(lastFeed));
         dataSetup(poultryData);
@@ -210,20 +219,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Collections.reverse(data.getFeeds());
             dataSetup(data);
         }));
-    }
-
-    private void getControllersState() {
-        ApiHandler.invoke(this, Feed.class, Request.Method.GET, ApiHandler.getControllerFeedURL(), feed -> {
-            if (feed == null) return;
-
-            String controlOneState = AppExtensions.formatValue(feed.getField1(), "0");
-            lightOneSwitch.setText(AppExtensions.getString(controlOneState.equals("1") ? R.string.on : R.string.off));
-
-            String controlTwoState = AppExtensions.formatValue(feed.getField2(), "0");
-            lightTwoSwitch.setText(AppExtensions.getString(controlTwoState.equals("1") ? R.string.on : R.string.off));
-
-            sp.feedData(SharedPreference.CONTROLLER_STATE_SP_KEY, new Feed(controlOneState, controlTwoState));
-        });
     }
 
     /**
@@ -332,26 +327,93 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 airQualityStatus.setText(null);
             }
         }
+
+        /**
+         * Water Height
+         **/
+        String getWaterHeight = AppExtensions.formatValue(lastFeed == null ? null : lastFeed.getField4(), null);
+        if(getWaterHeight != null){
+            lastWaterHeightValue.setVisibility(View.VISIBLE);
+            lastWaterHeightValue.setText(String.format("%s %s", getWaterHeight, AppExtensions.getString(R.string.waterHeightUnit)));
+        }
+        else lastWaterHeightValue.setVisibility(View.GONE);
+
+        waterHeightValue.setText(AppExtensions.formatValue(currentFeed.getField4(), getResources().getString(R.string.nullSymbol)));
+        String getCurWaterHeight = AppExtensions.formatValue(currentFeed.getField4(), null);
+        if(getCurWaterHeight != null) {
+            double waterHeight = Double.parseDouble(getCurWaterHeight);
+            if(waterHeight > Constants.WATER_HEIGHT_MAX_VALUE){
+                waterHeightStatus.setText(AppExtensions.getString(R.string.high));
+            }
+            else {
+                waterHeightStatus.setText(AppExtensions.getString(R.string.normal));
+            }
+        }
     }
 
-    private void updateControlState(AppCompatButton toggleButton) {
+    private void getControllersState() {
+        Channel channel = sp.channelData(SharedPreference.CONTROLLER_CHANNEL_SP_KEY + "_" + sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY).getChannelId());
+        if (channel.getChannelId() == null) {
+            AddControllerFragment.show().setOnAddListener(this::updateControllersUi);
+            return;
+        }
+        Feed feed = sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY);
+        updateControllersUi(feed);
+
+        ApiHandler.invoke(this, Feed.class, Request.Method.GET,
+                ApiHandler.singleFeedUrl(channel.getChannelId(), channel.getReadKey()),
+                new ApiHandler.OnDataListener<Feed>() {
+                    @Override
+                    public void onData(Feed data) {
+                        updateControllersUi(data);
+                    }
+                    @Override
+                    public void onError() {}
+                });
+    }
+
+    private void updateControllersState(SwitchCompat lightSwitch) {
         loading.setVisibility(View.VISIBLE);
-        boolean lightOneState = (toggleButton == lightOneSwitch) != lightOneSwitch.getText().equals(AppExtensions.getString(R.string.on));
-        boolean lightTwoState = (toggleButton == lightTwoSwitch) != lightTwoSwitch.getText().equals(AppExtensions.getString(R.string.on));
 
-        ApiHandler.invoke(this, String.class, Request.Method.POST, ApiHandler.updateControllerFeedURL(
-                lightOneState,
-                lightTwoState
-        ), state -> {
-            loading.setVisibility(View.GONE);
-            if (state == null || state.equals("0")) return;
-            if (toggleButton == lightOneSwitch)
-                toggleButton.setText(AppExtensions.getString(lightOneState ? R.string.on : R.string.off));
-            else if (toggleButton == lightTwoSwitch)
-                toggleButton.setText(AppExtensions.getString(lightTwoState ? R.string.on : R.string.off));
+        Channel channel = sp.channelData(SharedPreference.CONTROLLER_CHANNEL_SP_KEY + "_" + sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY).getChannelId());
+        if (channel.getChannelId() == null) return;
 
-            sp.feedData(SharedPreference.CONTROLLER_STATE_SP_KEY, new Feed(lightOneState ? "1" : "0", lightTwoState  ? "1" : "0"));
+        ApiHandler.invoke(this, Feed.class, Request.Method.POST, ApiHandler.updateControllerFeedURL(
+                channel.getWriteKey(),
+                lightOneSwitch.isChecked(),
+                lightTwoSwitch.isChecked(),
+                lightThreeSwitch.isChecked(),
+                lightFourSwitch.isChecked()
+        ), new ApiHandler.OnDataListener<Feed>() {
+            @Override
+            public void onData(Feed feed) {
+                loading.setVisibility(View.GONE);
+                updateControllersUi(feed);
+            }
+            @Override
+            public void onError() {
+                loading.setVisibility(View.GONE);
+                lightSwitch.setChecked(!lightSwitch.isChecked());
+            }
         });
+    }
+
+    void updateControllersUi(Feed feed){
+        if (feed == null) return;
+        Channel channel = sp.channelData(SharedPreference.CONTROLLER_CHANNEL_SP_KEY + "_" + sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY).getChannelId());
+        controllersLayout.setVisibility(channel.getChannelId() != null
+                ? View.VISIBLE
+                : View.GONE
+        );
+        lightOneSwitch.setChecked(isSwitchOn(feed.getField1()));
+        lightTwoSwitch.setChecked(isSwitchOn(feed.getField2()));
+        lightThreeSwitch.setChecked(isSwitchOn(feed.getField3()));
+        lightFourSwitch.setChecked(isSwitchOn(feed.getField4()));
+        sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY, feed);
+    }
+
+    boolean isSwitchOn(String status){
+        return AppExtensions.formatValue(status, "0").equals("1");
     }
 
     /**
@@ -371,6 +433,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             case R.id.addContact:
                 AddContactFragment.show(null);
                 break;
+            case R.id.addController:
+                AddControllerFragment.show().setOnAddListener(this::updateControllersUi);
+                break;
             case R.id.phoneContacts:
                 ContactsFragment.show();
                 break;
@@ -378,9 +443,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 EmergencyContactFragment.show();
                 break;
             case R.id.logout:
+                sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY, null);
                 sp.setLoggedIn(false);
-                sp.channelData(SharedPreference.CHANNEL_ID_SP_KEY, null);
-                sp.channelData(SharedPreference.CHANNEL_KEY_SP_KEY, null);
+
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -396,6 +461,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         dataModel.RefreshData();
+        getControllersState();
     }
 
     /**

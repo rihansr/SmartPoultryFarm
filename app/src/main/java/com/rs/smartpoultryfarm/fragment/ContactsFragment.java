@@ -81,6 +81,7 @@ public class ContactsFragment extends DialogFragment {
         setAllContacts();
     }
 
+    @SuppressLint("Range")
     private void setAllContacts(){
         try {
             List<Contact> contacts = new ArrayList<>();

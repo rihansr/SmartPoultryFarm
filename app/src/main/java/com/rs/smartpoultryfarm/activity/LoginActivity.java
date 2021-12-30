@@ -23,6 +23,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.android.volley.Request;
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.api.ApiHandler;
+import com.rs.smartpoultryfarm.model.Channel;
 import com.rs.smartpoultryfarm.model.PoultryData;
 import com.rs.smartpoultryfarm.receiver.NetworkStatusChangeReceiver;
 import com.rs.smartpoultryfarm.util.AppExtensions;
@@ -34,8 +35,8 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity {
 
     private RelativeLayout              rootLayout;
-    private AppCompatEditText           emailInput;
-    private AppCompatEditText           passwordInput;
+    private AppCompatEditText           idInput;
+    private AppCompatEditText           keyInput;
     private FrameLayout                 passwordIconHolder;
     private AppCompatImageView          passwordIcon;
     private AppCompatButton             login_Btn;
@@ -74,8 +75,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initId() {
         rootLayout = findViewById(R.id.rootLayout);
-        emailInput = findViewById(R.id.id_Input);
-        passwordInput = findViewById(R.id.key_Input);
+        idInput = findViewById(R.id.id_Input);
+        keyInput = findViewById(R.id.key_Input);
         passwordIconHolder = findViewById(R.id.passwordIconHolder);
         passwordIcon = findViewById(R.id.password_Icon);
         login_Btn = findViewById(R.id.login_Btn);
@@ -86,12 +87,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void init() {
         passwordIconHolder.setOnClickListener(v -> {
-            if (passwordInput.getTransformationMethod() == PasswordTransformationMethod.getInstance()) {
+            if (keyInput.getTransformationMethod() == PasswordTransformationMethod.getInstance()) {
                 passwordIcon.setImageResource(R.drawable.ic_password_visible_off);
-                passwordInput.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                keyInput.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             } else {
                 passwordIcon.setImageResource(R.drawable.ic_password_visible_on);
-                passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                keyInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
             }
         });
 
@@ -106,27 +107,27 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        final String id = Objects.requireNonNull(emailInput.getText()).toString().trim();
-        final String key = Objects.requireNonNull(passwordInput.getText()).toString().trim();
+        final String id = Objects.requireNonNull(idInput.getText()).toString().trim();
+        final String key = Objects.requireNonNull(keyInput.getText()).toString().trim();
 
         /**
          *  Validation
          **/
         if (TextUtils.isEmpty(Objects.requireNonNull(id))) {
-            emailInput.setError(getResources().getString(R.string.channelId_Error));
-            AppExtensions.requestFocus(emailInput);
+            idInput.setError(getResources().getString(R.string.channelId_Error));
+            AppExtensions.requestFocus(idInput);
             return;
         } else if (id.length() < 7) {
-            emailInput.setError(getResources().getString(R.string.validChannelId_Error));
-            AppExtensions.requestFocus(emailInput);
+            idInput.setError(getResources().getString(R.string.validChannelId_Error));
+            AppExtensions.requestFocus(idInput);
             return;
         } else if (TextUtils.isEmpty(Objects.requireNonNull(key))) {
-            passwordInput.setError(getResources().getString(R.string.key_Error));
-            AppExtensions.requestFocus(passwordInput);
+            keyInput.setError(getResources().getString(R.string.key_Error));
+            AppExtensions.requestFocus(keyInput);
             return;
         } else if (key.length() < 16) {
-            passwordInput.setError(getResources().getString(R.string.validKeyError));
-            AppExtensions.requestFocus(passwordInput);
+            keyInput.setError(getResources().getString(R.string.validKeyError));
+            AppExtensions.requestFocus(keyInput);
             return;
         }
 
@@ -137,19 +138,23 @@ public class LoginActivity extends AppCompatActivity {
         /**
          * Get data from https://thingspeak.com/
          **/
-        ApiHandler.invoke(LoginActivity.this, PoultryData.class, Request.Method.GET, ApiHandler.getDataFeedURL(id, key, 1), data -> {
-            progressDialog.dismiss();
-            if (data == null || data.getFeeds().size() == 0 || data.getCode() == 404) {
-                new CustomSnackBar(rootLayout, R.string.dataNotExist, R.string.retry, CustomSnackBar.Duration.SHORT).show();
-                return;
+        ApiHandler.invoke(LoginActivity.this, PoultryData.class, Request.Method.GET, ApiHandler.feedsUrl(id, key, 1), new ApiHandler.OnDataListener<PoultryData>() {
+            @Override
+            public void onData(PoultryData data) {
+                progressDialog.dismiss();
+                if (data == null || data.getFeeds().size() == 0 || data.getCode() == 404) {
+                    new CustomSnackBar(rootLayout, R.string.dataNotExist, R.string.retry, CustomSnackBar.Duration.SHORT).show();
+                    return;
+                }
+                launchActivity(id, key);
             }
-            launchActivity(id, key);
+            @Override
+            public void onError() {}
         });
     }
 
     private void launchActivity(String id, String key) {
-        sp.channelData(SharedPreference.CHANNEL_ID_SP_KEY, id);
-        sp.channelData(SharedPreference.CHANNEL_KEY_SP_KEY, key);
+        sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY, new Channel(id, key, null));
         sp.setLoggedIn(true);
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

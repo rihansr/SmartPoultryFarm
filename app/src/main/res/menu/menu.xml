@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/addController"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="collapseActionView"
+        android:title="@string/addController" />
+
+    <item
         android:id="@+id/addContact"
         android:icon="@drawable/ic_add_contact"
         app:showAsAction="collapseActionView"

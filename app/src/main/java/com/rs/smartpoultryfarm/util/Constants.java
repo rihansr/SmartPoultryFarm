@@ -14,6 +14,7 @@ public class Constants {
     public static final double  TEMPERATURE_MAX_VALUE = 95;
     public static final long    HUMIDITY_MIN_VALUE = 60;
     public static final long    HUMIDITY_MAX_VALUE = 80;
+    public static final long    WATER_HEIGHT_MAX_VALUE = 100;
 
     /** Timer **/
     public static final long    SPLASH_TIME_OUT = 2000;

@@ -1,6 +1,8 @@
 package com.rs.smartpoultryfarm.api;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -15,26 +17,36 @@ public class ApiHandler {
     public static String CONTROLLER_READ_API_KEY = "X1QJYT5YGVL6L6G1";
     public static String CONTROLLER_WRITE_API_KEY = "D3ZV4DMFD1FZGGFG";
 
-    public static String getDataFeedURL(String id, String key, int limit) {
+    public static String feedsUrl(String id, String key, int limit) {
         return "https://api.thingspeak.com/channels/" + id + "/feeds.json?api_key=" + key + "&results=" + limit;
     }
 
-    public static String getControllerFeedURL() {
-        return "https://api.thingspeak.com/channels/" + CONTROLLER_CHANNEL_ID + "/feeds/last.json?api_key=" + CONTROLLER_READ_API_KEY;
+    public static String singleFeedUrl(String id, String key) {
+        return "https://api.thingspeak.com/channels/" + id + "/feeds/last.json?api_key=" + key;
     }
 
-    public static String updateControllerFeedURL(boolean lightOneState, boolean lightTwoState) {
-        return "https://api.thingspeak.com/update"
-                + "?api_key=" + CONTROLLER_WRITE_API_KEY
-                + "&field1=" + (lightOneState ? "1" : "0")
-                + "&field2=" + (lightTwoState ? "1" : "0");
+    public static String updateControllerFeedURL(String key, boolean one, boolean two, boolean three, boolean four) {
+        return "https://api.thingspeak.com/update.json"
+                + "?api_key=" + key
+                + "&field1=" + (one ? "1" : "0")
+                + "&field2=" + (two ? "1" : "0")
+                + "&field3=" + (three ? "1" : "0")
+                + "&field4=" + (four ? "1" : "0");
     }
 
     public static <T> void invoke(Context context, Class<T> type, int method, String url, OnDataListener<T> listener) {
         StringRequest stringRequest = new StringRequest(method, url,
-                response -> listener.onData(new GsonBuilder().create().fromJson(response, type)),
+                response -> {
+                    try {
+                        listener.onData(new GsonBuilder().create().fromJson(response, type));
+                    }
+                    catch (Exception e){
+                        listener.onError();
+                        e.printStackTrace();
+                    }
+                },
                 error -> {
-                    listener.onData(null);
+                    listener.onError();
                     error.printStackTrace();
                 });
 
@@ -49,5 +61,6 @@ public class ApiHandler {
 
     public interface OnDataListener<T> {
         void onData(T data);
+        void onError();
     }
 }
