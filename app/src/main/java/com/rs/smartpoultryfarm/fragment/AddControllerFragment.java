@@ -21,6 +21,7 @@ import com.rs.smartpoultryfarm.api.ApiHandler;
 import com.rs.smartpoultryfarm.controller.AppController;
 import com.rs.smartpoultryfarm.model.Channel;
 import com.rs.smartpoultryfarm.model.Feed;
+import com.rs.smartpoultryfarm.model.PoultryData;
 import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.Constants;
 import com.rs.smartpoultryfarm.util.CustomSnackBar;
@@ -90,13 +91,13 @@ public class AddControllerFragment extends DialogFragment {
         readKeyInput.setText(channel.getReadKey());
         writeKeyContact.setText(channel.getWriteKey());
 
-        actionButton.setText(AppExtensions.getString(channel.getChannelId() == null ? R.string.add : R.string.update));
+        actionButton.setText(AppExtensions.string(channel.getChannelId() == null ? R.string.add : R.string.update));
 
         backButton.setOnClickListener(view -> dismiss());
 
         actionButton.setOnClickListener(v -> {
             if (!Constants.IS_NETWORK_CONNECTED) {
-                new CustomSnackBar(AppExtensions.getRootView(getDialog()), AppExtensions.getString(R.string.network_Error), false, CustomSnackBar.Duration.LONG).show();
+                new CustomSnackBar(AppExtensions.rootView(getDialog()), AppExtensions.string(R.string.network_Error), false, CustomSnackBar.Duration.LONG).show();
                 return;
             }
 
@@ -145,20 +146,28 @@ public class AddControllerFragment extends DialogFragment {
         /**
          * Get data from https://thingspeak.com/
          **/
-        ApiHandler.invoke(context, Feed.class, Request.Method.GET,
+        ApiHandler.invoke(context, PoultryData.class, Request.Method.GET,
                 ApiHandler.singleFeedUrl(id, readKey),
-                new ApiHandler.OnDataListener<Feed>() {
+                new ApiHandler.OnDataListener<PoultryData>() {
                     @Override
-                    public void onData(Feed controller) {
+                    public void onData(PoultryData data) {
                         progressDialog.dismiss();
+                        if (data == null || data.getCode() == 404) {
+                            new CustomSnackBar(AppExtensions.rootView(getDialog()), R.string.dataNotExist, R.string.retry, CustomSnackBar.Duration.SHORT).show();
+                            return;
+                        }
                         sp.channelData(SharedPreference.CONTROLLER_CHANNEL_SP_KEY + "_" + sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY).getChannelId(),
                                 new Channel(id, readKey, writeKey)
                         );
-                        if(mOnAddListener != null) mOnAddListener.onAdd(controller);
+                        Feed feed = AppExtensions.isNullOrEmpty(data.getFeeds()) ? null : data.getFeeds().get(0);
+                        if(mOnAddListener != null) mOnAddListener.onAdd(feed);
                         dismiss();
                     }
                     @Override
-                    public void onError() {}
+                    public void onError() {
+                        progressDialog.dismiss();
+                        new CustomSnackBar(AppExtensions.rootView(getDialog()), R.string.dataNotExist, R.string.retry, CustomSnackBar.Duration.SHORT).show();
+                    }
                 });
     }
 

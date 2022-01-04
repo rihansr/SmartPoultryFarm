@@ -1,6 +1,6 @@
 package com.rs.smartpoultryfarm.adapter;
 
-import static com.rs.smartpoultryfarm.util.AppExtensions.getString;
+import static com.rs.smartpoultryfarm.util.AppExtensions.string;
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,8 +85,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             holder.removeContact.setVisibility(View.GONE);
         }
 
-        holder.contactName.setText(getContact(position).getName() == null ? getString(R.string.unknown) : getContact(position).getName());
-        holder.contactNumber.setText(getContact(position).getNumber() == null ? getString(R.string.numberNotFound) : getContact(position).getNumber());
+        holder.contactName.setText(getContact(position).getName() == null ? string(R.string.unknown) : getContact(position).getName());
+        holder.contactNumber.setText(getContact(position).getNumber() == null ? string(R.string.numberNotFound) : getContact(position).getNumber());
 
         holder.addContact.setOnClickListener(view -> {
             sp.storeEmergencyContact(getContact(position));

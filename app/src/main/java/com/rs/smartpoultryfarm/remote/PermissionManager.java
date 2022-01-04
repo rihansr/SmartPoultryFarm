@@ -121,11 +121,11 @@ public class PermissionManager {
 
         switch (permission){
             case CONTACT:
-                title = AppExtensions.getString(R.string.contactPermission);   message = AppExtensions.getString(R.string.contactPermissionMessage);
+                title = AppExtensions.string(R.string.contactPermission);   message = AppExtensions.string(R.string.contactPermissionMessage);
                 break;
 
             case SMS:
-                title = AppExtensions.getString(R.string.smsPermission);   message = AppExtensions.getString(R.string.smsPermissionMessage);
+                title = AppExtensions.string(R.string.smsPermission);   message = AppExtensions.string(R.string.smsPermissionMessage);
                 break;
         }
 

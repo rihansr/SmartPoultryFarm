@@ -83,8 +83,8 @@ public class EmergencyContactFragment extends DialogFragment {
             return;
         }
 
-        contactName.setText(contact.getName() != null ? contact.getName() : AppExtensions.getString(R.string.unknown));
-        contactNumber.setText(contact.getNumber() != null ? contact.getNumber() : AppExtensions.getString(R.string.numberNotFound));
+        contactName.setText(contact.getName() != null ? contact.getName() : AppExtensions.string(R.string.unknown));
+        contactNumber.setText(contact.getNumber() != null ? contact.getNumber() : AppExtensions.string(R.string.numberNotFound));
 
         editContact.setOnClickListener(view -> {
             dismiss();

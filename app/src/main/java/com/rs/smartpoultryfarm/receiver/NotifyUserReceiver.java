@@ -52,9 +52,7 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                 new ApiHandler.OnDataListener<PoultryData>() {
                     @Override
                     public void onData(PoultryData data) {
-                        if (data == null) return;
-                        if (data.getCode() == 404) return;
-                        if (data.getFeeds() == null || data.getFeeds().isEmpty()) return;
+                        if (data == null || data.getCode() == 404 || AppExtensions.isNullOrEmpty(data.getFeeds())) return;
                         Collections.reverse(data.getFeeds());
 
                         Feed curFeed = data.getFeeds().get(0);
@@ -73,15 +71,15 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                         /**
                          *  Checking Temperature
                          **/
-                        String getNewTemperature = AppExtensions.formatValue(curFeed.getField1(), null);
-                        String getOldTemperature = AppExtensions.formatValue(lastFeed.getField1(), null);
+                        String getNewTemperature = AppExtensions.formatVal(curFeed.getField1(), null);
+                        String getOldTemperature = AppExtensions.formatVal(lastFeed.getField1(), null);
                         if (getNewTemperature != null) {
                             double newTemperature = Double.parseDouble(getNewTemperature);
                             if (getOldTemperature == null || newTemperature != Double.parseDouble(getOldTemperature)) {
                                 if (newTemperature < Constants.TEMPERATURE_MIN_VALUE) {
-                                    temperatureStatus = AppExtensions.getString(R.string.low) + " temperature, its about " + getNewTemperature + " " + AppExtensions.getString(R.string.temperatureUnit);
+                                    temperatureStatus = AppExtensions.string(R.string.low) + " temperature, its about " + getNewTemperature + " " + AppExtensions.string(R.string.temperatureUnit);
                                 } else if (newTemperature > Constants.TEMPERATURE_MAX_VALUE) {
-                                    temperatureStatus = AppExtensions.getString(R.string.high) + " temperature, its about " + getNewTemperature + " " + AppExtensions.getString(R.string.temperatureUnit);
+                                    temperatureStatus = AppExtensions.string(R.string.high) + " temperature, its about " + getNewTemperature + " " + AppExtensions.string(R.string.temperatureUnit);
                                 }
                             }
                         }
@@ -89,15 +87,15 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                         /**
                          *  Checking Humidity
                          **/
-                        String getNewHumidity = AppExtensions.formatValue(curFeed.getField2(), null);
-                        String getOldHumidity = AppExtensions.formatValue(lastFeed.getField2(), null);
+                        String getNewHumidity = AppExtensions.formatVal(curFeed.getField2(), null);
+                        String getOldHumidity = AppExtensions.formatVal(lastFeed.getField2(), null);
                         if (getNewHumidity != null) {
                             double newHumidity = Double.parseDouble(getNewHumidity);
                             if (getOldHumidity == null || newHumidity != Double.parseDouble(getOldHumidity)) {
                                 if (newHumidity < Constants.HUMIDITY_MIN_VALUE) {
-                                    humidityStatus = AppExtensions.getString(R.string.low) + " humidity, its about " + getNewHumidity + " " + AppExtensions.getString(R.string.humidityUnit);
+                                    humidityStatus = AppExtensions.string(R.string.low) + " humidity, its about " + getNewHumidity + " " + AppExtensions.string(R.string.humidityUnit);
                                 } else if (newHumidity > Constants.HUMIDITY_MAX_VALUE) {
-                                    humidityStatus = AppExtensions.getString(R.string.high) + " humidity, its about " + getNewHumidity + " " + AppExtensions.getString(R.string.humidityUnit);
+                                    humidityStatus = AppExtensions.string(R.string.high) + " humidity, its about " + getNewHumidity + " " + AppExtensions.string(R.string.humidityUnit);
                                 }
                             }
                         }
@@ -105,21 +103,21 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                         /**
                          *  Checking Air Quality
                          **/
-                        String getNewAirQuality = AppExtensions.formatValue(curFeed.getField3(), null);
-                        String getOldAirQuality = AppExtensions.formatValue(lastFeed.getField3(), null);
+                        String getNewAirQuality = AppExtensions.formatVal(curFeed.getField3(), null);
+                        String getOldAirQuality = AppExtensions.formatVal(lastFeed.getField3(), null);
                         if (getNewAirQuality != null) {
                             double newAirQuality = Double.parseDouble(getNewAirQuality);
                             if (getOldAirQuality == null || newAirQuality != Double.parseDouble(getOldAirQuality)) {
                                 if (newAirQuality >= 51 && newAirQuality < 101) {
-                                    airQualityStatus = "Air Quality (" + AppExtensions.getString(R.string.moderate) + "), its about " + getNewAirQuality + " " + AppExtensions.getString(R.string.airQualityUnit);
+                                    airQualityStatus = "Air Quality (" + AppExtensions.string(R.string.moderate) + "), its about " + getNewAirQuality + " " + AppExtensions.string(R.string.airQualityUnit);
                                 } else if (newAirQuality >= 101 && newAirQuality < 151) {
-                                    airQualityStatus = "Air Quality (" + AppExtensions.getString(R.string.unhealthyForSensitiveGroups) + "), its about " + getNewAirQuality + " " + AppExtensions.getString(R.string.airQualityUnit);
+                                    airQualityStatus = "Air Quality (" + AppExtensions.string(R.string.unhealthyForSensitiveGroups) + "), its about " + getNewAirQuality + " " + AppExtensions.string(R.string.airQualityUnit);
                                 } else if (newAirQuality >= 151 && newAirQuality < 201) {
-                                    airQualityStatus = "Air Quality (" + AppExtensions.getString(R.string.unhealthy) + "), its about " + getNewAirQuality + " " + AppExtensions.getString(R.string.airQualityUnit);
+                                    airQualityStatus = "Air Quality (" + AppExtensions.string(R.string.unhealthy) + "), its about " + getNewAirQuality + " " + AppExtensions.string(R.string.airQualityUnit);
                                 } else if (newAirQuality >= 201 && newAirQuality < 301) {
-                                    airQualityStatus = "Air Quality (" + AppExtensions.getString(R.string.veryUnhealthy) + "), its about " + getNewAirQuality + " " + AppExtensions.getString(R.string.airQualityUnit);
+                                    airQualityStatus = "Air Quality (" + AppExtensions.string(R.string.veryUnhealthy) + "), its about " + getNewAirQuality + " " + AppExtensions.string(R.string.airQualityUnit);
                                 } else if (newAirQuality >= 301 && newAirQuality <= 500) {
-                                    airQualityStatus = "Air Quality (" + AppExtensions.getString(R.string.hazardous) + "), its about " + getNewAirQuality + " " + AppExtensions.getString(R.string.airQualityUnit);
+                                    airQualityStatus = "Air Quality (" + AppExtensions.string(R.string.hazardous) + "), its about " + getNewAirQuality + " " + AppExtensions.string(R.string.airQualityUnit);
                                 }
                             }
                         }
@@ -127,14 +125,14 @@ public class NotifyUserReceiver extends BroadcastReceiver {
                         /**
                          *  Checking Water Height
                          **/
-                        String getNewWaterHeight = AppExtensions.formatValue(curFeed.getField4(), null);
-                        String getOldWaterHeight = AppExtensions.formatValue(lastFeed.getField4(), null);
+                        String getNewWaterHeight = AppExtensions.formatVal(curFeed.getField4(), null);
+                        String getOldWaterHeight = AppExtensions.formatVal(lastFeed.getField4(), null);
                         if (getNewWaterHeight != null) {
                             double newWaterHeight = Double.parseDouble(getNewWaterHeight);
                             if (getOldWaterHeight == null || newWaterHeight != Double.parseDouble(getOldWaterHeight)) {
                                 if (newWaterHeight > Constants.WATER_HEIGHT_MAX_VALUE) {
-                                    waterHeightStatus = "Water height " + AppExtensions.getString(R.string.high).toLowerCase()
-                                            + ", its about " + getNewWaterHeight + " " + AppExtensions.getString(R.string.waterHeightUnit);
+                                    waterHeightStatus = "Water height " + AppExtensions.string(R.string.high).toLowerCase()
+                                            + ", its about " + getNewWaterHeight + " " + AppExtensions.string(R.string.waterHeightUnit);
                                 }
                             }
                         }
@@ -199,7 +197,7 @@ public class NotifyUserReceiver extends BroadcastReceiver {
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         String CHANNEL_ID = BuildConfig.APPLICATION_ID;
-        String CHANNEL_NAME = "TeleKiT";
+        String CHANNEL_NAME = Constants.TAG;
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);

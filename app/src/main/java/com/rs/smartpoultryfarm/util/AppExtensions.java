@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -16,20 +17,26 @@ import androidx.core.content.ContextCompat;
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.controller.AppController;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Objects;
 
 public class AppExtensions {
 
-    public static String formatValue(String value, String defaultText) {
-        if (value == null || value.trim().isEmpty()) return defaultText;
-        if (value.trim().matches("[a-zA-Z]+")) return defaultText;
+    public static String formatVal(String val, String orElse) {
+        if (val == null) return orElse;
+        val = val.replaceAll("[^\\d.]", "");
+        if (val.trim().isEmpty()) return orElse;
 
-        return customDecimalFormat(Double.parseDouble(value));
+        return customDecimalFormat(Double.parseDouble(val));
     }
 
     public static String customDecimalFormat(double number) {
         DecimalFormat df = new DecimalFormat("#.#");
         return (number % 1 == 0) ? String.valueOf((int) number) : df.format(number);
+    }
+
+    public static boolean isNullOrEmpty(final List<?> l) {
+        return l == null || l.isEmpty();
     }
 
     /**
@@ -64,15 +71,15 @@ public class AppExtensions {
     /**
      * Resources
      **/
-    public static String getString(int id) {
+    public static String string(int id) {
         return AppController.getContext().getResources().getString(id);
     }
 
-    public static Drawable getDrawable(int id){
+    public static Drawable drawable(int id){
         return ContextCompat.getDrawable(AppController.getActivity(), id);
     }
 
-    public static View getRootView(Dialog dialog){
+    public static View rootView(Dialog dialog){
         return Objects.requireNonNull(Objects.requireNonNull(dialog).getWindow()).getDecorView().getRootView();
     }
 }

@@ -3,7 +3,7 @@ package com.rs.smartpoultryfarm.util;
 public class Constants {
 
     /** Other **/
-    public static String        TAG = "SAF";
+    public static String        TAG = "SPF";
     public static boolean       IS_NETWORK_CONNECTED = false;
     public static String        DATA_LISTENER_KEY = "dataListenerKey";
     public static String        DATA_INTENT_KEY = "dataIntentKey";

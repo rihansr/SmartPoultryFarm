@@ -40,9 +40,9 @@ public class ApiHandler {
                     try {
                         listener.onData(new GsonBuilder().create().fromJson(response, type));
                     }
-                    catch (Exception e){
+                    catch (Exception exp){
                         listener.onError();
-                        e.printStackTrace();
+                        exp.printStackTrace();
                     }
                 },
                 error -> {

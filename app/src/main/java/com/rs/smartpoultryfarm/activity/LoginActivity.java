@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
 
         login_Btn.setOnClickListener(v -> {
             if (!Constants.IS_NETWORK_CONNECTED) {
-                new CustomSnackBar(rootLayout, AppExtensions.getString(R.string.network_Error), false, CustomSnackBar.Duration.LONG).show();
+                new CustomSnackBar(rootLayout, AppExtensions.string(R.string.network_Error), false, CustomSnackBar.Duration.LONG).show();
                 return;
             }
 
@@ -138,19 +138,25 @@ public class LoginActivity extends AppCompatActivity {
         /**
          * Get data from https://thingspeak.com/
          **/
-        ApiHandler.invoke(LoginActivity.this, PoultryData.class, Request.Method.GET, ApiHandler.feedsUrl(id, key, 1), new ApiHandler.OnDataListener<PoultryData>() {
-            @Override
-            public void onData(PoultryData data) {
-                progressDialog.dismiss();
-                if (data == null || data.getFeeds().size() == 0 || data.getCode() == 404) {
-                    new CustomSnackBar(rootLayout, R.string.dataNotExist, R.string.retry, CustomSnackBar.Duration.SHORT).show();
-                    return;
-                }
-                launchActivity(id, key);
-            }
-            @Override
-            public void onError() {}
-        });
+        ApiHandler.invoke(LoginActivity.this, PoultryData.class, Request.Method.GET,
+                ApiHandler.feedsUrl(id, key, 1),
+                new ApiHandler.OnDataListener<PoultryData>() {
+                    @Override
+                    public void onData(PoultryData data) {
+                        progressDialog.dismiss();
+                        if (data == null || data.getCode() == 404) {
+                            new CustomSnackBar(rootLayout, R.string.dataNotExist, R.string.retry, CustomSnackBar.Duration.SHORT).show();
+                            return;
+                        }
+                        launchActivity(id, key);
+                    }
+
+                    @Override
+                    public void onError() {
+                        progressDialog.dismiss();
+                        new CustomSnackBar(rootLayout, R.string.dataNotExist, R.string.retry, CustomSnackBar.Duration.SHORT).show();
+                    }
+                });
     }
 
     private void launchActivity(String id, String key) {

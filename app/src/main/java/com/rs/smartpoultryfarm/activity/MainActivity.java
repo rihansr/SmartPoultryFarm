@@ -11,7 +11,6 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -215,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         dataModel.getRefresh().observe(MainActivity.this, o -> dataModel.getHealthData().observe(MainActivity.this, data -> {
             refreshLayout.setRefreshing(false);
             loading.setVisibility(View.GONE);
-            if(data == null || data.getFeeds().size() == 0) return;
+            if(data == null || AppExtensions.isNullOrEmpty(data.getFeeds())) return;
             Collections.reverse(data.getFeeds());
             dataSetup(data);
         }));
@@ -242,86 +241,86 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         /**
          * Temperature
          **/
-        String getLastTemp = AppExtensions.formatValue(lastFeed == null ? null : lastFeed.getField1(), null);
+        String getLastTemp = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField1(), null);
         if(getLastTemp != null){
             lastTemperatureValue.setVisibility(View.VISIBLE);
-            lastTemperatureValue.setText(String.format("%s %s", getLastTemp, AppExtensions.getString(R.string.temperatureUnit)));
+            lastTemperatureValue.setText(String.format("%s %s", getLastTemp, AppExtensions.string(R.string.temperatureUnit)));
         }
         else lastTemperatureValue.setVisibility(View.GONE);
 
-        temperatureValue.setText(AppExtensions.formatValue(currentFeed.getField1(), getResources().getString(R.string.nullSymbol)));
-        String getCurTemp = AppExtensions.formatValue(currentFeed.getField1(), null);
+        temperatureValue.setText(AppExtensions.formatVal(currentFeed.getField1(), getResources().getString(R.string.nullSymbol)));
+        String getCurTemp = AppExtensions.formatVal(currentFeed.getField1(), null);
 
         if(getCurTemp != null){
             double temp = Double.parseDouble(getCurTemp);
             if(temp < Constants.TEMPERATURE_MIN_VALUE){
-                temperatureStatus.setText(AppExtensions.getString(R.string.low));
+                temperatureStatus.setText(AppExtensions.string(R.string.low));
             }
             else if(temp > Constants.TEMPERATURE_MAX_VALUE){
-                temperatureStatus.setText(AppExtensions.getString(R.string.high));
+                temperatureStatus.setText(AppExtensions.string(R.string.high));
             }
             else {
-                temperatureStatus.setText(AppExtensions.getString(R.string.normal));
+                temperatureStatus.setText(AppExtensions.string(R.string.normal));
             }
         }
 
         /**
          * Humidity
          **/
-        String getLastHumidity = AppExtensions.formatValue(lastFeed == null ? null : lastFeed.getField2(), null);
+        String getLastHumidity = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField2(), null);
         if(getLastHumidity != null){
             lastHumidityValue.setVisibility(View.VISIBLE);
-            lastHumidityValue.setText(String.format("%s %s", getLastHumidity, AppExtensions.getString(R.string.humidityUnit)));
+            lastHumidityValue.setText(String.format("%s %s", getLastHumidity, AppExtensions.string(R.string.humidityUnit)));
         }
         else lastHumidityValue.setVisibility(View.GONE);
 
-        humidityValue.setText(AppExtensions.formatValue(currentFeed.getField2(), getResources().getString(R.string.nullSymbol)));
-        String getCurHumidity = AppExtensions.formatValue(currentFeed.getField2(), null);
+        humidityValue.setText(AppExtensions.formatVal(currentFeed.getField2(), getResources().getString(R.string.nullSymbol)));
+        String getCurHumidity = AppExtensions.formatVal(currentFeed.getField2(), null);
         if(getCurHumidity != null) {
             double humidity = Double.parseDouble(getCurHumidity);
             if(humidity < Constants.HUMIDITY_MIN_VALUE){
-                humidityStatus.setText(AppExtensions.getString(R.string.low));
+                humidityStatus.setText(AppExtensions.string(R.string.low));
             }
             else if(humidity > Constants.HUMIDITY_MAX_VALUE){
-                humidityStatus.setText(AppExtensions.getString(R.string.high));
+                humidityStatus.setText(AppExtensions.string(R.string.high));
             }
             else {
-                humidityStatus.setText(AppExtensions.getString(R.string.normal));
+                humidityStatus.setText(AppExtensions.string(R.string.normal));
             }
         }
 
         /**
          * Air Quality
          **/
-        String getLastMoisture = AppExtensions.formatValue(lastFeed == null ? null : lastFeed.getField3(), null);
+        String getLastMoisture = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField3(), null);
         if(getLastMoisture != null){
             lastAirQualityValue.setVisibility(View.VISIBLE);
-            lastAirQualityValue.setText(String.format("%s %s", getLastMoisture, AppExtensions.getString(R.string.airQualityUnit)));
+            lastAirQualityValue.setText(String.format("%s %s", getLastMoisture, AppExtensions.string(R.string.airQualityUnit)));
         }
         else lastAirQualityValue.setVisibility(View.GONE);
 
-        airQualityValue.setText(AppExtensions.formatValue(currentFeed.getField3(), getResources().getString(R.string.nullSymbol)));
-        String getCurAirQuality = AppExtensions.formatValue(currentFeed.getField3(), null);
+        airQualityValue.setText(AppExtensions.formatVal(currentFeed.getField3(), getResources().getString(R.string.nullSymbol)));
+        String getCurAirQuality = AppExtensions.formatVal(currentFeed.getField3(), null);
 
         if(getCurAirQuality != null){
             double airQuality = Double.parseDouble(getCurAirQuality);
             if(airQuality >= 0 && airQuality < 51){
-                airQualityStatus.setText(AppExtensions.getString(R.string.good));
+                airQualityStatus.setText(AppExtensions.string(R.string.good));
             }
             else if(airQuality >= 51 && airQuality < 101){
-                airQualityStatus.setText(AppExtensions.getString(R.string.moderate));
+                airQualityStatus.setText(AppExtensions.string(R.string.moderate));
             }
             else if(airQuality >= 101 && airQuality < 151){
-                airQualityStatus.setText(AppExtensions.getString(R.string.unhealthyForSensitiveGroups));
+                airQualityStatus.setText(AppExtensions.string(R.string.unhealthyForSensitiveGroups));
             }
             else if(airQuality >= 151 && airQuality < 201){
-                airQualityStatus.setText(AppExtensions.getString(R.string.unhealthy));
+                airQualityStatus.setText(AppExtensions.string(R.string.unhealthy));
             }
             else if(airQuality >= 201 && airQuality < 301){
-                airQualityStatus.setText(AppExtensions.getString(R.string.veryUnhealthy));
+                airQualityStatus.setText(AppExtensions.string(R.string.veryUnhealthy));
             }
             else if(airQuality >= 301 && airQuality <= 500){
-                airQualityStatus.setText(AppExtensions.getString(R.string.hazardous));
+                airQualityStatus.setText(AppExtensions.string(R.string.hazardous));
             }
             else {
                 airQualityStatus.setText(null);
@@ -331,22 +330,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         /**
          * Water Height
          **/
-        String getWaterHeight = AppExtensions.formatValue(lastFeed == null ? null : lastFeed.getField4(), null);
+        String getWaterHeight = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField4(), null);
         if(getWaterHeight != null){
             lastWaterHeightValue.setVisibility(View.VISIBLE);
-            lastWaterHeightValue.setText(String.format("%s %s", getWaterHeight, AppExtensions.getString(R.string.waterHeightUnit)));
+            lastWaterHeightValue.setText(String.format("%s %s", getWaterHeight, AppExtensions.string(R.string.waterHeightUnit)));
         }
         else lastWaterHeightValue.setVisibility(View.GONE);
 
-        waterHeightValue.setText(AppExtensions.formatValue(currentFeed.getField4(), getResources().getString(R.string.nullSymbol)));
-        String getCurWaterHeight = AppExtensions.formatValue(currentFeed.getField4(), null);
+        waterHeightValue.setText(AppExtensions.formatVal(currentFeed.getField4(), getResources().getString(R.string.nullSymbol)));
+        String getCurWaterHeight = AppExtensions.formatVal(currentFeed.getField4(), null);
         if(getCurWaterHeight != null) {
             double waterHeight = Double.parseDouble(getCurWaterHeight);
             if(waterHeight > Constants.WATER_HEIGHT_MAX_VALUE){
-                waterHeightStatus.setText(AppExtensions.getString(R.string.high));
+                waterHeightStatus.setText(AppExtensions.string(R.string.high));
             }
             else {
-                waterHeightStatus.setText(AppExtensions.getString(R.string.normal));
+                waterHeightStatus.setText(AppExtensions.string(R.string.normal));
             }
         }
     }
@@ -413,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     boolean isSwitchOn(String status){
-        return AppExtensions.formatValue(status, "0").equals("1");
+        return AppExtensions.formatVal(status, "0").equals("1");
     }
 
     /**

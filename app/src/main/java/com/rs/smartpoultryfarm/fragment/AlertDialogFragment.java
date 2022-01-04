@@ -36,10 +36,10 @@ public class AlertDialogFragment extends DialogFragment {
 
     private static Bundle getArguments(Object title, Object message, Object leftButton, Object rightButton){
         Bundle args = new Bundle();
-        if(title != null) args.putString("title", title instanceof String ? (String)title : AppExtensions.getString((Integer)title));
-        if(message != null) args.putString("message", message instanceof String ? (String)message : AppExtensions.getString((Integer)message));
-        if(leftButton != null) args.putString("leftButton", leftButton instanceof String ? (String)leftButton : AppExtensions.getString((Integer)leftButton));
-        if(rightButton != null) args.putString("rightButton", rightButton instanceof String ? (String)rightButton : AppExtensions.getString((Integer)rightButton));
+        if(title != null) args.putString("title", title instanceof String ? (String)title : AppExtensions.string((Integer)title));
+        if(message != null) args.putString("message", message instanceof String ? (String)message : AppExtensions.string((Integer)message));
+        if(leftButton != null) args.putString("leftButton", leftButton instanceof String ? (String)leftButton : AppExtensions.string((Integer)leftButton));
+        if(rightButton != null) args.putString("rightButton", rightButton instanceof String ? (String)rightButton : AppExtensions.string((Integer)rightButton));
         return args;
     }
 

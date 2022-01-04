@@ -42,8 +42,8 @@ public class CustomSnackBar {
     public void init(View anchor, Object message, Object action, Duration duration){
         this.mContext = AppController.getContext();
         this.anchor = anchor;
-        if(message != null) this.message = message instanceof String ? (String)message : AppExtensions.getString((Integer)message);
-        if(action != null) this.action = action instanceof String ? (String)action : AppExtensions.getString((Integer)action);
+        if(message != null) this.message = message instanceof String ? (String)message : AppExtensions.string((Integer)message);
+        if(action != null) this.action = action instanceof String ? (String)action : AppExtensions.string((Integer)action);
         this.duration = duration == null ? Duration.SHORT : duration;
     }
 
@@ -70,7 +70,7 @@ public class CustomSnackBar {
         TextView textView = s_layout.findViewById(R.id.snackbar_text);
         textView.setTextColor(Color.WHITE);
 
-        s_layout.setBackground(AppExtensions.getDrawable(R.drawable.shape_snackbar));
+        s_layout.setBackground(AppExtensions.drawable(R.drawable.shape_snackbar));
 
         snackbar.show();
     }
