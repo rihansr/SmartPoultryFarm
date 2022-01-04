@@ -12,11 +12,115 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!--Controllers-->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/controllers.Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:paddingVertical="@dimen/margin_Small"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/lightOne"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_Color_Light"
+                    android:textSize="@dimen/text_Size_Extra_Small"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/lightTwo"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_Color_Light"
+                    android:textSize="@dimen/text_Size_Extra_Small"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/lightThree"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_Color_Light"
+                    android:textSize="@dimen/text_Size_Extra_Small"
+                    android:textStyle="normal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/lightFour"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_Color_Light"
+                    android:textSize="@dimen/text_Size_Extra_Small"
+                    android:textStyle="normal" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_minus14sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lightOne.Switch"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_weight="1"
+                    app:lottie_autoPlay="false"
+                    app:lottie_fileName="lottie/light.json"
+                    app:lottie_loop="false" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lightTwo.Switch"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_weight="1"
+                    app:lottie_autoPlay="false"
+                    app:lottie_fileName="lottie/light.json"
+                    app:lottie_loop="false" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lightThree.Switch"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_weight="1"
+                    app:lottie_autoPlay="false"
+                    app:lottie_fileName="lottie/light.json"
+                    app:lottie_loop="false" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lightFour.Switch"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_48sdp"
+                    android:layout_weight="1"
+                    app:lottie_autoPlay="false"
+                    app:lottie_fileName="lottie/light.json"
+                    app:lottie_loop="false" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <!--Content-->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/controllers.Layout"
+            android:layout_below="@+id/controllers.Layout"
             android:fillViewport="true"
             android:paddingStart="@dimen/padding_Extra_Large"
             android:paddingTop="@dimen/padding_Extra_Large"
@@ -412,87 +516,6 @@
 
         </ScrollView>
 
-        <!--Controllers-->
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/controllers.Layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorWhite"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="@dimen/padding_Medium">
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_Medium"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/lightOne.Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_Small"
-                    android:text="@string/lightOne"
-                    android:textColor="@color/text_Color_Dark"
-                    android:textSize="@dimen/text_Size_Small"
-                    android:textStyle="normal" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/lightTwo.Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_Small"
-                    android:text="@string/lightTwo"
-                    android:textColor="@color/text_Color_Dark"
-                    android:textSize="@dimen/text_Size_Small"
-                    android:textStyle="normal" />
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <View
-                android:layout_width="@dimen/_1sdp"
-                android:layout_height="@dimen/_48sdp"
-                android:layout_marginStart="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
-                android:background="@color/text_Color_Accent" />
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_Small"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/lightThree.Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_Small"
-                    android:text="@string/lightThree"
-                    android:textColor="@color/text_Color_Dark"
-                    android:textSize="@dimen/text_Size_Small"
-                    android:textStyle="normal" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/lightFour.Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_Small"
-                    android:text="@string/lightFour"
-                    android:textColor="@color/text_Color_Dark"
-                    android:textSize="@dimen/text_Size_Small"
-                    android:textStyle="normal" />
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <!--Loading-->
         <com.github.ybq.android.spinkit.SpinKitView

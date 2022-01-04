@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
 import com.github.ybq.android.spinkit.style.Circle;
 import com.rs.smartpoultryfarm.R;
@@ -63,11 +65,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private AppCompatTextView           waterHeightValue;
     private AppCompatTextView           lastWaterHeightValue;
     private AppCompatTextView           waterHeightStatus;
-    private SwitchCompat                lightOneSwitch;
     private LinearLayoutCompat          controllersLayout;
-    private SwitchCompat                lightTwoSwitch;
-    private SwitchCompat                lightThreeSwitch;
-    private SwitchCompat                lightFourSwitch;
+    private LottieAnimationView         lightOneSwitch;
+    private LottieAnimationView         lightTwoSwitch;
+    private LottieAnimationView         lightThreeSwitch;
+    private LottieAnimationView         lightFourSwitch;
     private ProgressBar                 loading;
     private AlertDialog                 notificationAlertDialog;
     private AlertDialog                 autoStartAlertDialog;
@@ -96,10 +98,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         new NotifyUserReceiver().startNotifyService(this);
 
-        lightOneSwitch.setOnClickListener(view -> updateControllersState(lightOneSwitch));
-        lightTwoSwitch.setOnClickListener(view -> updateControllersState(lightTwoSwitch));
-        lightThreeSwitch.setOnClickListener(view -> updateControllersState(lightTwoSwitch));
-        lightFourSwitch.setOnClickListener(view -> updateControllersState(lightTwoSwitch));
+        lightOneSwitch.setOnClickListener(v -> updateControllersState(v));
+        lightTwoSwitch.setOnClickListener(this::updateControllersState);
+        lightThreeSwitch.setOnClickListener(this::updateControllersState);
+        lightFourSwitch.setOnClickListener(this::updateControllersState);
 
         getFeedData();
 
@@ -371,18 +373,19 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 });
     }
 
-    private void updateControllersState(SwitchCompat lightSwitch) {
+    private void updateControllersState(View light) {
         loading.setVisibility(View.VISIBLE);
+        handleLight((LottieAnimationView) light,  ((LottieAnimationView) light).getProgress() == 0 ? "1" : "0");
 
         Channel channel = sp.channelData(SharedPreference.CONTROLLER_CHANNEL_SP_KEY + "_" + sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY).getChannelId());
         if (channel.getChannelId() == null) return;
 
         ApiHandler.invoke(this, Feed.class, Request.Method.POST, ApiHandler.updateControllerFeedURL(
                 channel.getWriteKey(),
-                lightOneSwitch.isChecked(),
-                lightTwoSwitch.isChecked(),
-                lightThreeSwitch.isChecked(),
-                lightFourSwitch.isChecked()
+                lightOneSwitch.getProgress() != 0,
+                lightTwoSwitch .getProgress() != 0,
+                lightThreeSwitch.getProgress() != 0,
+                lightFourSwitch.getProgress() != 0
         ), new ApiHandler.OnDataListener<Feed>() {
             @Override
             public void onData(Feed feed) {
@@ -392,23 +395,33 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             public void onError() {
                 loading.setVisibility(View.GONE);
-                lightSwitch.setChecked(!lightSwitch.isChecked());
+                handleLight((LottieAnimationView) light,  ((LottieAnimationView) light).getProgress() == 0 ? "1" : "0");
             }
         });
     }
 
     void updateControllersUi(Feed feed){
         if (feed == null) return;
+
         Channel channel = sp.channelData(SharedPreference.CONTROLLER_CHANNEL_SP_KEY + "_" + sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY).getChannelId());
+
         controllersLayout.setVisibility(channel.getChannelId() != null
                 ? View.VISIBLE
                 : View.GONE
         );
-        lightOneSwitch.setChecked(isSwitchOn(feed.getField1()));
-        lightTwoSwitch.setChecked(isSwitchOn(feed.getField2()));
-        lightThreeSwitch.setChecked(isSwitchOn(feed.getField3()));
-        lightFourSwitch.setChecked(isSwitchOn(feed.getField4()));
+
+        handleLight(lightOneSwitch, feed.getField1());
+        handleLight(lightTwoSwitch, feed.getField2());
+        handleLight(lightThreeSwitch, feed.getField3());
+        handleLight(lightFourSwitch, feed.getField4());
+
         sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY, feed);
+    }
+
+    void handleLight(LottieAnimationView light, String status){
+        if(isSwitchOn(status))
+            light.playAnimation();
+        else light.setProgress(0);
     }
 
     boolean isSwitchOn(String status){

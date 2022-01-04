@@ -18,10 +18,10 @@
     <string name="normal">Normal</string>
     <string name="high">High</string>
     <string name="low">Low</string>
-    <string name="lightOne">Light One</string>
-    <string name="lightTwo">Light Two</string>
-    <string name="lightThree">Light Three</string>
-    <string name="lightFour">Light Four</string>
+    <string name="lightOne">Light 1</string>
+    <string name="lightTwo">Light 2</string>
+    <string name="lightThree">Light 3</string>
+    <string name="lightFour">Light 4</string>
     <string name="on">ON</string>
     <string name="off">OFF</string>
     <string name="name">Name</string>
