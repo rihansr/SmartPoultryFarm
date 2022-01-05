@@ -1,5 +1,13 @@
 package com.rs.smartpoultryfarm.util;
 
+import static com.rs.smartpoultryfarm.util.AppExtensions.string;
+
+import com.rs.smartpoultryfarm.R;
+import com.rs.smartpoultryfarm.model.Field;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Constants {
 
     /** Other **/
@@ -19,4 +27,13 @@ public class Constants {
     /** Timer **/
     public static final long    SPLASH_TIME_OUT = 2000;
     public static final long    REFRESH_DELAY = 60000; /*1 min*/
+
+    public static List<Field> fields() {
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field("field1", R.raw.temperature, string(R.string.temperature), string(R.string.temperatureUnit)));
+        fields.add(new Field("field2", R.raw.humidity, string(R.string.humidity), string(R.string.humidityUnit)));
+        fields.add(new Field("field3", R.raw.air_quality, string(R.string.airQuality), string(R.string.airQualityUnit)));
+        fields.add(new Field("field4", R.raw.water_height, string(R.string.waterHeight), string(R.string.waterHeightUnit)));
+        return fields;
+    }
 }

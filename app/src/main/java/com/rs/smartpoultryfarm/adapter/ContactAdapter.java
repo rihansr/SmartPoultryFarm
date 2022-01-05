@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.model.Contact;
+import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.SharedPreference;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     }
 
     public void setContacts(List<Contact> contacts) {
-        if(contacts != null && contacts.size() != 0) this.contacts = contacts;
+        if(!AppExtensions.isNullOrEmpty(contacts)) this.contacts = contacts;
         else this.contacts = new ArrayList<>();
         notifyDataSetChanged();
     }

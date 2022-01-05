@@ -16,11 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-
-import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
 import com.github.ybq.android.spinkit.style.Circle;
 import com.rs.smartpoultryfarm.R;
+import com.rs.smartpoultryfarm.adapter.FieldAdapter;
+import com.rs.smartpoultryfarm.adapter.LightAdapter;
 import com.rs.smartpoultryfarm.api.ApiHandler;
 import com.rs.smartpoultryfarm.controller.AppController;
 import com.rs.smartpoultryfarm.fragment.AddContactFragment;
@@ -29,6 +29,7 @@ import com.rs.smartpoultryfarm.fragment.ContactsFragment;
 import com.rs.smartpoultryfarm.fragment.EmergencyContactFragment;
 import com.rs.smartpoultryfarm.model.Channel;
 import com.rs.smartpoultryfarm.model.Feed;
+import com.rs.smartpoultryfarm.model.Field;
 import com.rs.smartpoultryfarm.model.PoultryData;
 import com.rs.smartpoultryfarm.model.AgroDataModel;
 import com.rs.smartpoultryfarm.receiver.NotifyUserReceiver;
@@ -38,38 +39,26 @@ import com.rs.smartpoultryfarm.util.Constants;
 import com.rs.smartpoultryfarm.util.CustomSnackBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.rs.smartpoultryfarm.receiver.NetworkStatusChangeReceiver;
 import com.rs.smartpoultryfarm.util.SharedPreference;
 import java.util.Collections;
+import java.util.List;
 import static android.net.ConnectivityManager.CONNECTIVITY_ACTION;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout          refreshLayout;
     private AgroDataModel               dataModel;
-    private AppCompatTextView           humidityValue;
-    private AppCompatTextView           lastHumidityValue;
-    private AppCompatTextView           humidityStatus;
-    private AppCompatTextView           temperatureValue;
-    private AppCompatTextView           lastTemperatureValue;
-    private AppCompatTextView           temperatureStatus;
-    private AppCompatTextView           airQualityValue;
-    private AppCompatTextView           lastAirQualityValue;
-    private AppCompatTextView           airQualityStatus;
-    private AppCompatTextView           waterHeightValue;
-    private AppCompatTextView           lastWaterHeightValue;
-    private AppCompatTextView           waterHeightStatus;
-    private LinearLayoutCompat          controllersLayout;
-    private LottieAnimationView         lightOneSwitch;
-    private LottieAnimationView         lightTwoSwitch;
-    private LottieAnimationView         lightThreeSwitch;
-    private LottieAnimationView         lightFourSwitch;
+    private RecyclerView                rcvLights;
+    private LightAdapter                lightsAdapter;
+    private RecyclerView                rcvFields;
+    private FieldAdapter                fieldsAdapter;
+    private List<Field>                 fields;
     private ProgressBar                 loading;
     private AlertDialog                 notificationAlertDialog;
     private AlertDialog                 autoStartAlertDialog;
@@ -94,14 +83,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         init();
 
+        setAdapter();
+
         refreshLayout.setOnRefreshListener(this);
 
         new NotifyUserReceiver().startNotifyService(this);
-
-        lightOneSwitch.setOnClickListener(v -> updateControllersState(v));
-        lightTwoSwitch.setOnClickListener(this::updateControllersState);
-        lightThreeSwitch.setOnClickListener(this::updateControllersState);
-        lightFourSwitch.setOnClickListener(this::updateControllersState);
 
         getFeedData();
 
@@ -175,27 +161,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         dataModel = new AgroDataModel(getApplication());
 
-        humidityValue = findViewById(R.id.humidity_Value);
-        lastHumidityValue = findViewById(R.id.humidity_Last);
-        humidityStatus = findViewById(R.id.humidity_Status);
-
-        temperatureValue = findViewById(R.id.temperature_Value);
-        lastTemperatureValue = findViewById(R.id.temperature_Last);
-        temperatureStatus = findViewById(R.id.temperature_Status);
-
-        airQualityValue = findViewById(R.id.airQuality_Value);
-        lastAirQualityValue = findViewById(R.id.airQuality_Last);
-        airQualityStatus = findViewById(R.id.airQuality_Status);
-
-        waterHeightValue = findViewById(R.id.waterHeight_Value);
-        lastWaterHeightValue = findViewById(R.id.waterHeight_Last);
-        waterHeightStatus = findViewById(R.id.waterHeight_Status);
-
-        controllersLayout = findViewById(R.id.controllers_Layout);
-        lightOneSwitch = findViewById(R.id.lightOne_Switch);
-        lightTwoSwitch = findViewById(R.id.lightTwo_Switch);
-        lightThreeSwitch = findViewById(R.id.lightThree_Switch);
-        lightFourSwitch = findViewById(R.id.lightFour_Switch);
+        rcvLights = findViewById(R.id.lights_rcv);
+        rcvFields = findViewById(R.id.fields_rcv);
 
         loading = findViewById(R.id.loader);
         loading.setIndeterminateDrawable(new Circle());
@@ -234,6 +201,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     };
 
+    public void setAdapter() {
+        lightsAdapter = new LightAdapter();
+        rcvLights.setAdapter(lightsAdapter);
+        lightsAdapter.setFeed(sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY));
+
+        fields = Constants.fields();
+        fieldsAdapter = new FieldAdapter();
+        rcvFields.setAdapter(fieldsAdapter);
+        fieldsAdapter.setFields(fields);
+    }
+
     private void dataSetup(PoultryData poultryData){
         Feed lastFeed = poultryData.getFeeds().size() == 2 && poultryData.getFeeds().get(1) != null ? poultryData.getFeeds().get(1) : null;
 
@@ -243,189 +221,101 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         /**
          * Temperature
          **/
-        String getLastTemp = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField1(), null);
-        if(getLastTemp != null){
-            lastTemperatureValue.setVisibility(View.VISIBLE);
-            lastTemperatureValue.setText(String.format("%s %s", getLastTemp, AppExtensions.string(R.string.temperatureUnit)));
-        }
-        else lastTemperatureValue.setVisibility(View.GONE);
+        String curTemp = AppExtensions.formatVal(currentFeed.getField1(), null);
+        String prevTemp = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField1(), null);
+        fields.get(0).setCurValue(curTemp);
+        fields.get(0).setPrevValue(prevTemp);
 
-        temperatureValue.setText(AppExtensions.formatVal(currentFeed.getField1(), getResources().getString(R.string.nullSymbol)));
-        String getCurTemp = AppExtensions.formatVal(currentFeed.getField1(), null);
-
-        if(getCurTemp != null){
-            double temp = Double.parseDouble(getCurTemp);
-            if(temp < Constants.TEMPERATURE_MIN_VALUE){
-                temperatureStatus.setText(AppExtensions.string(R.string.low));
-            }
-            else if(temp > Constants.TEMPERATURE_MAX_VALUE){
-                temperatureStatus.setText(AppExtensions.string(R.string.high));
-            }
-            else {
-                temperatureStatus.setText(AppExtensions.string(R.string.normal));
-            }
-        }
+        if (curTemp != null) {
+            double temperature = Double.parseDouble(curTemp);
+            if (temperature < Constants.TEMPERATURE_MIN_VALUE)
+                fields.get(0).setStatus(AppExtensions.string(R.string.low));
+            else if (temperature > Constants.TEMPERATURE_MAX_VALUE)
+                fields.get(0).setStatus(AppExtensions.string(R.string.high));
+            else
+                fields.get(0).setStatus(AppExtensions.string(R.string.normal));
+        } else fields.get(0).setStatus(null);
 
         /**
          * Humidity
          **/
-        String getLastHumidity = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField2(), null);
-        if(getLastHumidity != null){
-            lastHumidityValue.setVisibility(View.VISIBLE);
-            lastHumidityValue.setText(String.format("%s %s", getLastHumidity, AppExtensions.string(R.string.humidityUnit)));
-        }
-        else lastHumidityValue.setVisibility(View.GONE);
+        String curHum = AppExtensions.formatVal(currentFeed.getField2(), null);
+        String prevHum = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField2(), null);
+        fields.get(1).setCurValue(curHum);
+        fields.get(1).setPrevValue(prevHum);
 
-        humidityValue.setText(AppExtensions.formatVal(currentFeed.getField2(), getResources().getString(R.string.nullSymbol)));
-        String getCurHumidity = AppExtensions.formatVal(currentFeed.getField2(), null);
-        if(getCurHumidity != null) {
-            double humidity = Double.parseDouble(getCurHumidity);
-            if(humidity < Constants.HUMIDITY_MIN_VALUE){
-                humidityStatus.setText(AppExtensions.string(R.string.low));
-            }
-            else if(humidity > Constants.HUMIDITY_MAX_VALUE){
-                humidityStatus.setText(AppExtensions.string(R.string.high));
-            }
-            else {
-                humidityStatus.setText(AppExtensions.string(R.string.normal));
-            }
-        }
+        if (curHum != null) {
+            double humidity = Double.parseDouble(curHum);
+            if (humidity < Constants.HUMIDITY_MIN_VALUE)
+                fields.get(1).setStatus(AppExtensions.string(R.string.low));
+            else if (humidity > Constants.HUMIDITY_MAX_VALUE)
+                fields.get(1).setStatus(AppExtensions.string(R.string.high));
+            else
+                fields.get(1).setStatus(AppExtensions.string(R.string.normal));
+        } else fields.get(1).setStatus(null);
 
         /**
          * Air Quality
          **/
-        String getLastMoisture = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField3(), null);
-        if(getLastMoisture != null){
-            lastAirQualityValue.setVisibility(View.VISIBLE);
-            lastAirQualityValue.setText(String.format("%s %s", getLastMoisture, AppExtensions.string(R.string.airQualityUnit)));
-        }
-        else lastAirQualityValue.setVisibility(View.GONE);
+        String curAQ = AppExtensions.formatVal(currentFeed.getField3(), null);
+        String prevAQ = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField3(), null);
+        fields.get(2).setCurValue(curAQ);
+        fields.get(2).setPrevValue(prevAQ);
 
-        airQualityValue.setText(AppExtensions.formatVal(currentFeed.getField3(), getResources().getString(R.string.nullSymbol)));
-        String getCurAirQuality = AppExtensions.formatVal(currentFeed.getField3(), null);
-
-        if(getCurAirQuality != null){
-            double airQuality = Double.parseDouble(getCurAirQuality);
-            if(airQuality >= 0 && airQuality < 51){
-                airQualityStatus.setText(AppExtensions.string(R.string.good));
-            }
-            else if(airQuality >= 51 && airQuality < 101){
-                airQualityStatus.setText(AppExtensions.string(R.string.moderate));
-            }
-            else if(airQuality >= 101 && airQuality < 151){
-                airQualityStatus.setText(AppExtensions.string(R.string.unhealthyForSensitiveGroups));
-            }
-            else if(airQuality >= 151 && airQuality < 201){
-                airQualityStatus.setText(AppExtensions.string(R.string.unhealthy));
-            }
-            else if(airQuality >= 201 && airQuality < 301){
-                airQualityStatus.setText(AppExtensions.string(R.string.veryUnhealthy));
-            }
-            else if(airQuality >= 301 && airQuality <= 500){
-                airQualityStatus.setText(AppExtensions.string(R.string.hazardous));
-            }
-            else {
-                airQualityStatus.setText(null);
-            }
-        }
+        if (curAQ != null) {
+            double airQuality = Double.parseDouble(curAQ);
+            if (airQuality >= 0 && airQuality < 51)
+                fields.get(2).setStatus(AppExtensions.string(R.string.good));
+            else if (airQuality >= 51 && airQuality < 101)
+                fields.get(2).setStatus(AppExtensions.string(R.string.moderate));
+            else if (airQuality >= 101 && airQuality < 151)
+                fields.get(2).setStatus(AppExtensions.string(R.string.unhealthyForSensitiveGroups));
+            else if (airQuality >= 151 && airQuality < 201)
+                fields.get(2).setStatus(AppExtensions.string(R.string.unhealthy));
+            else if (airQuality >= 201 && airQuality < 301)
+                fields.get(2).setStatus(AppExtensions.string(R.string.veryUnhealthy));
+            else if (airQuality >= 301 && airQuality <= 500)
+                fields.get(2).setStatus(AppExtensions.string(R.string.hazardous));
+            else
+                fields.get(2).setStatus(null);
+        } else fields.get(2).setStatus(null);
 
         /**
          * Water Height
          **/
-        String getWaterHeight = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField4(), null);
-        if(getWaterHeight != null){
-            lastWaterHeightValue.setVisibility(View.VISIBLE);
-            lastWaterHeightValue.setText(String.format("%s %s", getWaterHeight, AppExtensions.string(R.string.waterHeightUnit)));
-        }
-        else lastWaterHeightValue.setVisibility(View.GONE);
+        String curWH = AppExtensions.formatVal(currentFeed.getField4(), null);
+        String prevWH = AppExtensions.formatVal(lastFeed == null ? null : lastFeed.getField4(), null);
+        fields.get(3).setCurValue(curWH);
+        fields.get(3).setPrevValue(prevWH);
+        if (curWH != null) {
+            double waterHeight = Double.parseDouble(curWH);
+            if (waterHeight > Constants.WATER_HEIGHT_MAX_VALUE)
+                fields.get(3).setStatus(AppExtensions.string(R.string.high));
+            else
+                fields.get(3).setStatus(AppExtensions.string(R.string.normal));
+        } else fields.get(3).setStatus(null);
 
-        waterHeightValue.setText(AppExtensions.formatVal(currentFeed.getField4(), getResources().getString(R.string.nullSymbol)));
-        String getCurWaterHeight = AppExtensions.formatVal(currentFeed.getField4(), null);
-        if(getCurWaterHeight != null) {
-            double waterHeight = Double.parseDouble(getCurWaterHeight);
-            if(waterHeight > Constants.WATER_HEIGHT_MAX_VALUE){
-                waterHeightStatus.setText(AppExtensions.string(R.string.high));
-            }
-            else {
-                waterHeightStatus.setText(AppExtensions.string(R.string.normal));
-            }
-        }
+        fieldsAdapter.setFields(fields);
     }
 
     private void getControllersState() {
+        refreshLayout.setRefreshing(false);
         Channel channel = sp.channelData(SharedPreference.CONTROLLER_CHANNEL_SP_KEY + "_" + sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY).getChannelId());
         if (channel.getChannelId() == null) {
-            AddControllerFragment.show().setOnAddListener(this::updateControllersUi);
+            AddControllerFragment.show().setOnAddListener(feed -> lightsAdapter.setFeed(feed));
             return;
         }
-        Feed feed = sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY);
-        updateControllersUi(feed);
 
         ApiHandler.invoke(this, Feed.class, Request.Method.GET,
                 ApiHandler.singleFeedUrl(channel.getChannelId(), channel.getReadKey()),
                 new ApiHandler.OnDataListener<Feed>() {
                     @Override
-                    public void onData(Feed data) {
-                        updateControllersUi(data);
+                    public void onData(Feed feed) {
+                        lightsAdapter.setFeed(feed);
                     }
                     @Override
                     public void onError() {}
                 });
-    }
-
-    private void updateControllersState(View light) {
-        loading.setVisibility(View.VISIBLE);
-        handleLight((LottieAnimationView) light,  ((LottieAnimationView) light).getProgress() == 0 ? "1" : "0");
-
-        Channel channel = sp.channelData(SharedPreference.CONTROLLER_CHANNEL_SP_KEY + "_" + sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY).getChannelId());
-        if (channel.getChannelId() == null) return;
-
-        ApiHandler.invoke(this, Feed.class, Request.Method.POST, ApiHandler.updateControllerFeedURL(
-                channel.getWriteKey(),
-                lightOneSwitch.getProgress() != 0,
-                lightTwoSwitch .getProgress() != 0,
-                lightThreeSwitch.getProgress() != 0,
-                lightFourSwitch.getProgress() != 0
-        ), new ApiHandler.OnDataListener<Feed>() {
-            @Override
-            public void onData(Feed feed) {
-                loading.setVisibility(View.GONE);
-                updateControllersUi(feed);
-            }
-            @Override
-            public void onError() {
-                loading.setVisibility(View.GONE);
-                handleLight((LottieAnimationView) light,  ((LottieAnimationView) light).getProgress() == 0 ? "1" : "0");
-            }
-        });
-    }
-
-    void updateControllersUi(Feed feed){
-        if (feed == null) return;
-
-        Channel channel = sp.channelData(SharedPreference.CONTROLLER_CHANNEL_SP_KEY + "_" + sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY).getChannelId());
-
-        controllersLayout.setVisibility(channel.getChannelId() != null
-                ? View.VISIBLE
-                : View.GONE
-        );
-
-        handleLight(lightOneSwitch, feed.getField1());
-        handleLight(lightTwoSwitch, feed.getField2());
-        handleLight(lightThreeSwitch, feed.getField3());
-        handleLight(lightFourSwitch, feed.getField4());
-
-        sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY, feed);
-    }
-
-    void handleLight(LottieAnimationView light, String status){
-        if(isSwitchOn(status))
-            light.playAnimation();
-        else light.setProgress(0);
-    }
-
-    boolean isSwitchOn(String status){
-        return AppExtensions.formatVal(status, "0").equals("1");
     }
 
     /**
@@ -446,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 AddContactFragment.show(null);
                 break;
             case R.id.addController:
-                AddControllerFragment.show().setOnAddListener(this::updateControllersUi);
+                AddControllerFragment.show().setOnAddListener(feed -> lightsAdapter.setFeed(feed));
                 break;
             case R.id.phoneContacts:
                 ContactsFragment.show();
@@ -472,7 +362,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      **/
     @Override
     public void onRefresh() {
-        dataModel.RefreshData();
+        //dataModel.RefreshData();
         getControllersState();
     }
 

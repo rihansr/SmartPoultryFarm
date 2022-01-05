@@ -25,19 +25,20 @@ public class ApiHandler {
         return "https://api.thingspeak.com/channels/" + id + "/feeds/last.json?api_key=" + key;
     }
 
-    public static String updateControllerFeedURL(String key, boolean one, boolean two, boolean three, boolean four) {
+    public static String updateControllerFeedURL(String key, String one, String two, String three, String four) {
         return "https://api.thingspeak.com/update.json"
                 + "?api_key=" + key
-                + "&field1=" + (one ? "1" : "0")
-                + "&field2=" + (two ? "1" : "0")
-                + "&field3=" + (three ? "1" : "0")
-                + "&field4=" + (four ? "1" : "0");
+                + "&field1=" + one
+                + "&field2=" + two
+                + "&field3=" + three
+                + "&field4=" + four;
     }
 
     public static <T> void invoke(Context context, Class<T> type, int method, String url, OnDataListener<T> listener) {
         StringRequest stringRequest = new StringRequest(method, url,
                 response -> {
                     try {
+                        Log.e("Hell", "\n\n" + response);
                         listener.onData(new GsonBuilder().create().fromJson(response, type));
                     }
                     catch (Exception exp){

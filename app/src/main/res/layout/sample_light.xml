@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/light.tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/margin_Small"
+        android:background="@color/colorPrimary"
+        tools:text="@string/lightOne"
+        android:textAlignment="center"
+        android:textColor="@color/text_Color_Light"
+        android:textSize="@dimen/text_Size_Extra_Small"
+        android:textStyle="normal" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/light.icon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_64sdp"
+        android:layout_marginTop="@dimen/_minus18sdp"
+        android:layout_weight="1"
+        app:lottie_autoPlay="false"
+        app:lottie_rawRes="@raw/light"
+        app:lottie_loop="false" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
