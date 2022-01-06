@@ -42,7 +42,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/icon_Size_Large"
                 android:layout_marginEnd="@dimen/icon_Size_Large"
-                android:text="@string/addController"
+                android:text="@string/nav_addController"
                 android:textAlignment="center"
                 android:textColor="@color/text_Color_Dark"
                 android:textSize="@dimen/text_Size_Default"

@@ -26,16 +26,22 @@
     <string name="off">OFF</string>
     <string name="name">Name</string>
     <string name="number">Number</string>
-    <string name="contacts">Phone Contacts</string>
-    <string name="addContact">Add Contact</string>
-    <string name="addController">Add Controller</string>
-    <string name="emergencyContact">Emergency Contact</string>
     <string name="contactPermission">Contacts Permission</string>
     <string name="smsPermission">SMS Permission</string>
+    <string name="storagePermission">Storage Permission</string>
     <string name="unknown">Unknown</string>
     <string name="numberNotFound">No number found</string>
     <string name="rememberMe">Remember Me</string>
     <string name="processing">Processing…</string>
+    <string name="shareAPkVia">Share app via…</string>
+
+    <!--Navigation Drawer-->
+    <string name="nav_addController">Add Controller</string>
+    <string name="nav_addContact">Add Contact</string>
+    <string name="nav_contacts">Phone Contacts</string>
+    <string name="nav_emergencyContact">Emergency Contact</string>
+    <string name="nav_share">Share</string>
+    <string name="nav_logout">Logout</string>
 
     <!--Symbol-->
     <string name="temperatureUnit">\u00B0F</string>
@@ -62,7 +68,6 @@
     <string name="addNew">Add New</string>
     <string name="remove">Remove</string>
     <string name="login">Login</string>
-    <string name="logout">Logout</string>
     <string name="openSettings">Open Settings</string>
 
     <!--Message-->
@@ -71,6 +76,7 @@
     <string name="allowAutoStartupMessage">Please allow Auto Startup to always run in the background. Our app runs in background else our services can\'t be accessed.</string>
     <string name="contactPermissionMessage">Contacts Permission is necessary for getting all emergency contact from your device</string>
     <string name="smsPermissionMessage">SMS Permission is necessary for sending message to emergency contact</string>
+    <string name="storagePermissionMessage">Storage Permission is needed for sharing app</string>
     <string name="noEmergencyContact">Sorry, you have no emergency contact, please add new.</string>
     <string name="phone_Error">Please! Enter your mobile number</string>
     <string name="channelId_Error">Please! Enter channel id</string>

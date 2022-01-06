@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout.content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_Background"
+    tools:context=".activity.MainActivity">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/layout.refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--Lights-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/lights.rcv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:itemCount="4"
+                app:spanCount="4"
+                tools:listitem="@layout/sample_light" />
+
+            <!--Fields-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fields.rcv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/padding_Extra_Large"
+                android:layout_below="@+id/lights.rcv"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="4"
+                tools:listitem="@layout/sample_field" />
+
+            <!--Loading-->
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/loader"
+                style="@style/SpinKitView.Large.Circle"
+                android:layout_width="@dimen/icon_Size_Medium"
+                android:layout_height="@dimen/icon_Size_Medium"
+                android:layout_centerInParent="true"
+                app:SpinKit_Color="@color/colorAccent" />
+
+        </RelativeLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.cardview.widget.CardView>

@@ -31,6 +31,12 @@ public class AddContactFragment extends DialogFragment {
     private AppCompatButton     addContact;
     private SharedPreference    sp;
 
+    public static AddContactFragment show(){
+        AddContactFragment fragment = new AddContactFragment();
+        fragment.show(((AppCompatActivity) AppController.getActivity()).getSupportFragmentManager(), TAG);
+        return fragment;
+    }
+
     public static AddContactFragment show(Contact contact){
         AddContactFragment fragment = new AddContactFragment();
         if(contact != null){

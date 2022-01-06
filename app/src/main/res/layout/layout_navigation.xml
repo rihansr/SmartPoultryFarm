@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.navigation.NavigationView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view.navigation"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    android:background="@android:color/transparent"
+    tools:context=".activity.MainActivity">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_marginEnd="@dimen/margin_Large"
+        android:layout_marginTop="@dimen/margin_Extra_Large"
+        android:orientation="vertical">
+
+        <!--Nav Item - Add Controller-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nav.add.controller"
+            style="@style/NavItemStyle"
+            android:drawableStart="@drawable/ic_add_controller"
+            android:text="@string/nav_addController" />
+
+        <!--Nav Item - Add Contact-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nav.add.contact"
+            style="@style/NavItemStyle"
+            android:drawableStart="@drawable/ic_add_contact"
+            android:text="@string/nav_addContact" />
+
+        <!--Nav Item - Phone Contacts-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nav.phone.contacts"
+            style="@style/NavItemStyle"
+            android:drawableStart="@drawable/ic_phone_contacts"
+            android:text="@string/nav_contacts" />
+
+        <!--Nav Item - Emergency Contact-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nav.emergency.contact"
+            style="@style/NavItemStyle"
+            android:drawableStart="@drawable/ic_emergency_contact"
+            android:text="@string/nav_emergencyContact" />
+
+        <!--Divider-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/border_Small"
+            android:layout_marginTop="@dimen/margin_Extra_Large"
+            android:layout_marginBottom="@dimen/margin_Extra_Large"
+            android:alpha=".5"
+            android:background="@color/icon_Color_Light" />
+
+        <!--Nav Item - Share-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nav.share"
+            style="@style/NavItemStyle"
+            android:drawableStart="@drawable/ic_share"
+            android:text="@string/nav_share" />
+
+        <!--Nav Item - Logout-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nav.logout"
+            style="@style/NavItemStyle"
+            android:drawableStart="@drawable/ic_logout"
+            android:text="@string/nav_logout" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</com.google.android.material.navigation.NavigationView>

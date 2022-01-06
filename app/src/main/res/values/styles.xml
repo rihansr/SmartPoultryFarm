@@ -46,4 +46,15 @@
         <item name="colorAccent">@color/colorWhite</item>
     </style>
 
+    <!--Widgets Style-->
+    <style name="NavItemStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_Color_Light</item>
+        <item name="android:textSize">@dimen/text_Size_Medium</item>
+        <item name="android:padding">@dimen/padding_Medium</item>
+        <item name="android:drawablePadding">@dimen/padding_Extra_Large</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
 </resources>

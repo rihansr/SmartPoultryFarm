@@ -2,20 +2,27 @@ package com.rs.smartpoultryfarm.util;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-
 import androidx.core.content.ContextCompat;
-
+import androidx.core.content.FileProvider;
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.controller.AppController;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Objects;
@@ -81,5 +88,60 @@ public class AppExtensions {
 
     public static View rootView(Dialog dialog){
         return Objects.requireNonNull(Objects.requireNonNull(dialog).getWindow()).getDecorView().getRootView();
+    }
+
+    public static void shareApk() {
+        try {
+            File initialApkFile = new File(AppController.getActivity().getPackageManager()
+                    .getApplicationInfo(AppController.getActivity().getPackageName(), 0)
+                    .sourceDir
+            );
+
+            File tempFile = new File(AppController.getActivity().getExternalCacheDir() + "/ExtractedApk");
+
+            if (!tempFile.isDirectory())
+                if (!tempFile.mkdirs())
+                    return;
+
+            tempFile = new File(tempFile.getPath() + "/" + string(R.string.app_name) + ".apk");
+
+            if (!tempFile.exists()) {
+                if (!tempFile.createNewFile()) {
+                    return;
+                }
+            }
+
+            InputStream in = new FileInputStream(initialApkFile);
+            OutputStream out = new FileOutputStream(tempFile);
+
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+
+            shareFile(tempFile);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private static void shareFile(File sharePath) {
+        Uri uri;
+        if (Build.VERSION.SDK_INT < 24) {
+            uri = Uri.parse("file://" + sharePath);
+        }
+        else {
+            uri = FileProvider.getUriForFile(AppController.getContext(), AppController.getActivity().getPackageName() + ".fileprovider", new File(String.valueOf(sharePath)));
+        }
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, string(R.string.app_name));
+        shareIntent.setType("*/*");
+        AppController.getActivity().startActivity(Intent.createChooser(shareIntent, string(R.string.shareAPkVia)));
     }
 }

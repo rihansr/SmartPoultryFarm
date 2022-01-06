@@ -38,7 +38,6 @@ public class ApiHandler {
         StringRequest stringRequest = new StringRequest(method, url,
                 response -> {
                     try {
-                        Log.e("Hell", "\n\n" + response);
                         listener.onData(new GsonBuilder().create().fromJson(response, type));
                     }
                     catch (Exception exp){

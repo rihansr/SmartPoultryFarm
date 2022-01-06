@@ -3,6 +3,7 @@
 
     <!--Icon Size-->
     <dimen name="icon_Size_Extra_Small">@dimen/_16sdp</dimen>
+    <dimen name="icon_Size_Default">@dimen/_18sdp</dimen>
     <dimen name="icon_Size_Small">@dimen/_24sdp</dimen>
     <dimen name="icon_Size_Medium">@dimen/_28sdp</dimen>
     <dimen name="icon_Size_Large">@dimen/_32sdp</dimen>
@@ -21,6 +22,7 @@
     <dimen name="margin_Medium">@dimen/_8sdp</dimen>
     <dimen name="margin_Large">@dimen/_12sdp</dimen>
     <dimen name="margin_Extra_Large">@dimen/_16sdp</dimen>
+    <dimen name="margin_Double_Extra_Large">@dimen/_24sdp</dimen>
 
     <!--Padding-->
     <dimen name="padding_Extra_Small">@dimen/_2sdp</dimen>

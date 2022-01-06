@@ -75,7 +75,7 @@ public class EmergencyContactFragment extends DialogFragment {
         if(contact == null){
             dismiss();
 
-            AlertDialogFragment.show(null, R.string.noEmergencyContact, R.string.addNew, R.string.contacts)
+            AlertDialogFragment.show(null, R.string.noEmergencyContact, R.string.addNew, R.string.nav_contacts)
                     .setOnDialogListener(new AlertDialogFragment.OnDialogListener() {
                         @Override public void onLeftButtonClick() { AddContactFragment.show(null); }
                         @Override public void onRightButtonClick() { ContactsFragment.show(); }

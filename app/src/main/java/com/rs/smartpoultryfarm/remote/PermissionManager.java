@@ -2,6 +2,7 @@ package com.rs.smartpoultryfarm.remote;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.SEND_SMS;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
 import android.annotation.SuppressLint;
@@ -27,7 +28,7 @@ import java.util.List;
 public class PermissionManager {
 
     public enum Permission {
-        CONTACT, SMS
+        CONTACT, SMS, STORAGE
     }
 
     private Context     context;
@@ -74,6 +75,11 @@ public class PermissionManager {
                 isGranted = checkSelfPermission(context, SEND_SMS) == PERMISSION_GRANTED;
                 if(!isGranted && showDialog) showPermissionDialog(SEND_SMS);
                 break;
+
+            case STORAGE:
+                isGranted = checkSelfPermission(context, WRITE_EXTERNAL_STORAGE) == PERMISSION_GRANTED;
+                if(!isGranted && showDialog) showPermissionDialog(WRITE_EXTERNAL_STORAGE);
+                break;
         }
 
         return isGranted;
@@ -81,7 +87,7 @@ public class PermissionManager {
 
     public void showPermissionDialogs(){
         Dexter.withActivity(activity)
-                .withPermissions(READ_CONTACTS, SEND_SMS)
+                .withPermissions(READ_CONTACTS, SEND_SMS, WRITE_EXTERNAL_STORAGE)
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     @SuppressLint("MissingPermission")
@@ -123,9 +129,11 @@ public class PermissionManager {
             case CONTACT:
                 title = AppExtensions.string(R.string.contactPermission);   message = AppExtensions.string(R.string.contactPermissionMessage);
                 break;
-
             case SMS:
                 title = AppExtensions.string(R.string.smsPermission);   message = AppExtensions.string(R.string.smsPermissionMessage);
+                break;
+            case STORAGE:
+                title = AppExtensions.string(R.string.storagePermission);   message = AppExtensions.string(R.string.storagePermissionMessage);
                 break;
         }
 

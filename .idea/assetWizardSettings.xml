@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/E:/Android/android_sdk/icons/material/materialiconsoutlined/wb_incandescent/outline_wb_incandescent_24.xml" />
+                                      <entry key="url" value="file:/E:/Android/android_sdk/icons/material/materialiconsoutlined/contact_page/outline_contact_page_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_light_off" />
+                            <entry key="outputName" value="ic_phone_contact" />
                             <entry key="sourceFile" value="F:\SmartPoultryFarm" />
                           </map>
                         </option>

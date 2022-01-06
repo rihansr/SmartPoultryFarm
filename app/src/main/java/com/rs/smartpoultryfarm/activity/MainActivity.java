@@ -1,16 +1,23 @@
 package com.rs.smartpoultryfarm.activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +25,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import com.android.volley.Request;
 import com.github.ybq.android.spinkit.style.Circle;
+import com.google.android.material.navigation.NavigationView;
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.adapter.FieldAdapter;
 import com.rs.smartpoultryfarm.adapter.LightAdapter;
@@ -39,8 +47,12 @@ import com.rs.smartpoultryfarm.util.Constants;
 import com.rs.smartpoultryfarm.util.CustomSnackBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -52,13 +64,26 @@ import static android.net.ConnectivityManager.CONNECTIVITY_ACTION;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
+    private DrawerLayout                drawerLayout;
     private SwipeRefreshLayout          refreshLayout;
+    private CardView                    contentView;
+    private NavigationView              navigationView;
     private AgroDataModel               dataModel;
     private RecyclerView                rcvLights;
     private LightAdapter                lightsAdapter;
     private RecyclerView                rcvFields;
     private FieldAdapter                fieldsAdapter;
     private List<Field>                 fields;
+
+    /*Drawer*/
+    AppCompatTextView                   navAddController;
+    AppCompatTextView                   navAddContact;
+    AppCompatTextView                   navPhoneContacts;
+    AppCompatTextView                   navEmergencyContact;
+    AppCompatTextView                   navShare;
+    AppCompatTextView                   navLogout;
+
+    /*Other*/
     private ProgressBar                 loading;
     private AlertDialog                 notificationAlertDialog;
     private AlertDialog                 autoStartAlertDialog;
@@ -79,11 +104,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             actionBar.setLogo(R.drawable.app_logo_mini);
             actionBar.setDisplayUseLogoEnabled(true);
             actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setElevation(0);
         }
 
         init();
 
         setAdapter();
+
+        setDrawer();
 
         refreshLayout.setOnRefreshListener(this);
 
@@ -156,8 +184,19 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void init(){
-        refreshLayout = findViewById(R.id.swipeRefreshLayout);
+        drawerLayout = findViewById(R.id.layout_drawer);
+
+        contentView = findViewById(R.id.layout_content);
+        refreshLayout = findViewById(R.id.layout_refresh);
         refreshLayout.setColorSchemeResources(R.color.icon_Color_Accent);
+
+        navigationView = findViewById(R.id.view_navigation);
+        navAddController = findViewById(R.id.nav_add_controller);
+        navAddContact = findViewById(R.id.nav_add_contact);
+        navPhoneContacts = findViewById(R.id.nav_phone_contacts);
+        navEmergencyContact = findViewById(R.id.nav_emergency_contact);
+        navShare = findViewById(R.id.nav_share);
+        navLogout = findViewById(R.id.nav_logout);
 
         dataModel = new AgroDataModel(getApplication());
 
@@ -169,6 +208,67 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         sp = new SharedPreference();
         networkStatusChangeReceiver = new NetworkStatusChangeReceiver();
+    }
+
+    public void setAdapter() {
+        lightsAdapter = new LightAdapter();
+        rcvLights.setAdapter(lightsAdapter);
+        lightsAdapter.setFeed(sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY));
+
+        fields = Constants.fields();
+        fieldsAdapter = new FieldAdapter();
+        rcvFields.setAdapter(fieldsAdapter);
+        fieldsAdapter.setFields(fields);
+    }
+
+    public void setDrawer() {
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        drawerLayout.setDrawerElevation(0);
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+                float width = navigationView.getWidth() * slideOffset;
+                contentView.setX(width * -1);
+                contentView.setRadius(48 * slideOffset);
+                contentView.setElevation(12 * slideOffset);
+                contentView.setPivotX(width / 2);
+                contentView.setRotation(7 * slideOffset);
+                contentView.invalidate();
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {}
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {}
+
+            @Override
+            public void onDrawerStateChanged(int newState) {}
+        });
+
+        navAddController.setOnClickListener(v ->
+                AddControllerFragment.show().setOnAddListener(feed -> lightsAdapter.setFeed(feed))
+        );
+
+        navAddContact.setOnClickListener(v -> AddContactFragment.show());
+
+        navPhoneContacts.setOnClickListener(v -> ContactsFragment.show());
+
+        navEmergencyContact.setOnClickListener(v -> EmergencyContactFragment.show());
+
+        navShare.setOnClickListener(v -> {
+            if (!new PermissionManager(PermissionManager.Permission.STORAGE, true, response -> AppExtensions.shareApk()).isGranted()) return;
+            AppExtensions.shareApk();
+        });
+
+        navLogout.setOnClickListener(v -> {
+            sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY, null);
+            sp.setLoggedIn(false);
+
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
     }
 
     /**
@@ -200,17 +300,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             dataSetup(poultryData);
         }
     };
-
-    public void setAdapter() {
-        lightsAdapter = new LightAdapter();
-        rcvLights.setAdapter(lightsAdapter);
-        lightsAdapter.setFeed(sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY));
-
-        fields = Constants.fields();
-        fieldsAdapter = new FieldAdapter();
-        rcvFields.setAdapter(fieldsAdapter);
-        fieldsAdapter.setFields(fields);
-    }
 
     private void dataSetup(PoultryData poultryData){
         Feed lastFeed = poultryData.getFeeds().size() == 2 && poultryData.getFeeds().get(1) != null ? poultryData.getFeeds().get(1) : null;
@@ -330,28 +419,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id){
-            case R.id.addContact:
-                AddContactFragment.show(null);
-                break;
-            case R.id.addController:
-                AddControllerFragment.show().setOnAddListener(feed -> lightsAdapter.setFeed(feed));
-                break;
-            case R.id.phoneContacts:
-                ContactsFragment.show();
-                break;
-            case R.id.emergencyContact:
-                EmergencyContactFragment.show();
-                break;
-            case R.id.logout:
-                sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY, null);
-                sp.setLoggedIn(false);
-
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                break;
+        if (item.getItemId() == R.id.drawer_id) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.END))
+                drawerLayout.closeDrawer(GravityCompat.END);
+            else drawerLayout.openDrawer(GravityCompat.END);
         }
 
         return super.onOptionsItemSelected(item);
@@ -362,7 +433,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
      **/
     @Override
     public void onRefresh() {
-        //dataModel.RefreshData();
+        dataModel.RefreshData();
         getControllersState();
     }
 
@@ -431,7 +502,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             if(CustomSnackBar.snackbar != null) CustomSnackBar.snackbar.dismiss();
         }
         else {
-            CustomSnackBar snackBar = new CustomSnackBar(refreshLayout, R.string.network_Error, R.string.retry, CustomSnackBar.Duration.INDEFINITE);
+            CustomSnackBar snackBar = new CustomSnackBar(drawerLayout, R.string.network_Error, R.string.retry, CustomSnackBar.Duration.INDEFINITE);
             snackBar.show();
             snackBar.setOnDismissListener(skBar -> {
                 networkStatusChangeReceiver.onReceive(MainActivity.this, null);

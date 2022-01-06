@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,7 +148,7 @@ public class AddControllerFragment extends DialogFragment {
          * Get data from https://thingspeak.com/
          **/
         ApiHandler.invoke(context, PoultryData.class, Request.Method.GET,
-                ApiHandler.singleFeedUrl(id, readKey),
+                ApiHandler.feedsUrl(id, readKey, 1),
                 new ApiHandler.OnDataListener<PoultryData>() {
                     @Override
                     public void onData(PoultryData data) {
