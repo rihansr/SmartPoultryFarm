@@ -7,11 +7,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
 import com.rs.smartpoultryfarm.R;
@@ -21,9 +19,9 @@ import com.rs.smartpoultryfarm.model.Feed;
 import com.rs.smartpoultryfarm.model.Field;
 import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.SharedPreference;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressLint("NotifyDataSetChanged")
 public class LightAdapter extends RecyclerView.Adapter<LightAdapter.ViewHolder> {
@@ -42,7 +40,12 @@ public class LightAdapter extends RecyclerView.Adapter<LightAdapter.ViewHolder> 
     }
 
     public void setFeed(Feed feed) {
-        feed = feed == null ? sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY) : feed;
+        feed = feed == null ? new Feed() : feed;
+        Feed prevFeed = sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY);
+        if(Objects.equals(prevFeed.getField1(), feed.getField1())
+                && Objects.equals(prevFeed.getField2(), feed.getField2())
+                && Objects.equals(prevFeed.getField3(), feed.getField3())
+                && Objects.equals(prevFeed.getField4(), feed.getField4())) return;
         this.lights.get(0).setStatus(feed.getField1());
         this.lights.get(1).setStatus(feed.getField2());
         this.lights.get(2).setStatus(feed.getField3());
@@ -89,9 +92,7 @@ public class LightAdapter extends RecyclerView.Adapter<LightAdapter.ViewHolder> 
         Field light = light(position);
         holder.label.setText(light.getLabel());
         handleLight(holder.icon, position);
-        holder.itemView.setOnClickListener(v -> {
-            updateControllersState(holder.icon, position);
-        });
+        holder.itemView.setOnClickListener(v -> updateControllersState(holder.icon, position));
     }
 
     private  void handleLight(LottieAnimationView icon, int pos){
@@ -105,21 +106,27 @@ public class LightAdapter extends RecyclerView.Adapter<LightAdapter.ViewHolder> 
         if (channel.getChannelId() == null) return;
         String newStatus = icon.getProgress() == 0 ? "1" : "0";
 
-        ApiHandler.invoke(context, Feed.class, Request.Method.POST, ApiHandler.updateControllerFeedURL(
-                channel.getWriteKey(),
+        Feed feed = new Feed(
                 pos == 0 ? newStatus : lights.get(0).getStatus(),
                 pos == 1 ? newStatus : lights.get(1).getStatus(),
                 pos == 2 ? newStatus : lights.get(2).getStatus(),
                 pos == 3 ? newStatus : lights.get(3).getStatus()
-        ), new ApiHandler.OnDataListener<Feed>() {
-            @Override
-            public void onData(Feed feed) {
-                lights.get(pos).setStatus(newStatus);
-                handleLight(icon, pos);
-            }
-            @Override
-            public void onError() {}
-        });
+        );
+
+        ApiHandler.invoke(context, Feed.class, Request.Method.POST,
+                ApiHandler.updateControllerFeedURL(channel.getWriteKey(), feed),
+                new ApiHandler.OnDataListener<Feed>() {
+                    @Override
+                    public void onData(Feed feed) {
+                        lights.get(pos).setStatus(newStatus);
+                        sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY, feed);
+                        handleLight(icon, pos);
+                    }
+
+                    @Override
+                    public void onError() {
+                    }
+                });
     }
 
     @Override

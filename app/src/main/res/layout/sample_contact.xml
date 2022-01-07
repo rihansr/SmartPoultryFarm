@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat android:layout_width="match_parent"
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_Extra_Large"
         android:layout_marginEnd="@dimen/margin_Extra_Large"
-        android:layout_marginBottom="@dimen/margin_Small"
         android:background="@drawable/shape_card"
         android:padding="@dimen/padding_Extra_Large"
         android:orientation="vertical">

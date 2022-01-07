@@ -4,7 +4,7 @@
     <color name="colorPrimary">#E07188</color>dra
     <color name="colorSecondary">#F8E99B</color>
     <color name="colorWhite">#F8F8F9</color>
-    <color name="colorSmokeWhite">#EDEDED</color>
+    <color name="colorSmokeWhite">#F0F0F0</color>
     <color name="colorBlack">#58575D</color>
     <color name="colorDustyGray">#9B9B9B</color>
 </resources>

@@ -8,7 +8,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import com.android.volley.Request;
 import com.rs.smartpoultryfarm.api.ApiHandler;
+import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.SharedPreference;
+
+import java.util.Collections;
+import java.util.Objects;
 
 public class AgroDataModel extends AndroidViewModel {
 
@@ -51,14 +55,16 @@ public class AgroDataModel extends AndroidViewModel {
                     new ApiHandler.OnDataListener<PoultryData>() {
                         @Override
                         public void onData(PoultryData data) {
-                            if (data == null) return;
-                            if (data.getCode() == 404) return;
                             postValue(data);
                             setValue(data);
                             refresh.postValue(1);
                         }
                         @Override
-                        public void onError() {}
+                        public void onError() {
+                            postValue(null);
+                            setValue(null);
+                            refresh.postValue(1);
+                        }
                     });
         }
     }

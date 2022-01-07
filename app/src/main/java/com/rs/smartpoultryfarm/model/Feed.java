@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Feed implements Serializable {
+    @SerializedName("entry_id")
+    @Expose
+    private String id;
     @SerializedName("field1")
     @Expose
     private String field1;
@@ -18,26 +21,18 @@ public class Feed implements Serializable {
     @SerializedName("field4")
     @Expose
     private String field4;
-    @SerializedName("field5")
-    @Expose
-    private String field5;
-    @SerializedName("field6")
-    @Expose
-    private String field6;
-    @SerializedName("field7")
-    @Expose
-    private String field7;
-    @SerializedName("field8")
-    @Expose
-    private String field8;
 
     public Feed() {}
 
-    public Feed(double temperature, double humidity, double airQuality, double waterHeight) {
-        this.field1 = String.valueOf(temperature);
-        this.field2 = String.valueOf(humidity);
-        this.field3 = String.valueOf(airQuality);
-        this.field4 = String.valueOf(waterHeight);
+    public Feed(String field1, String field2, String field3, String field4) {
+        this.field1 = field1;
+        this.field2 = field2;
+        this.field3 = field3;
+        this.field4 = field4;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getField1() {
@@ -54,21 +49,5 @@ public class Feed implements Serializable {
 
     public String getField4() {
         return field4;
-    }
-
-    public String getField5() {
-        return field5;
-    }
-
-    public String getField6() {
-        return field6;
-    }
-
-    public String getField7() {
-        return field7;
-    }
-
-    public String getField8() {
-        return field8;
     }
 }

@@ -60,6 +60,8 @@ import com.rs.smartpoultryfarm.receiver.NetworkStatusChangeReceiver;
 import com.rs.smartpoultryfarm.util.SharedPreference;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
 import static android.net.ConnectivityManager.CONNECTIVITY_ACTION;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -283,7 +285,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         dataModel.getRefresh().observe(MainActivity.this, o -> dataModel.getHealthData().observe(MainActivity.this, data -> {
             refreshLayout.setRefreshing(false);
             loading.setVisibility(View.GONE);
-            if(data == null || AppExtensions.isNullOrEmpty(data.getFeeds())) return;
+            if (data == null
+                    || data.getCode() == 404
+                    || AppExtensions.isNullOrEmpty(data.getFeeds())) return;
+
             Collections.reverse(data.getFeeds());
             dataSetup(data);
         }));
@@ -384,6 +389,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 fields.get(3).setStatus(AppExtensions.string(R.string.normal));
         } else fields.get(3).setStatus(null);
 
+        sp.feedData(SharedPreference.POULTRY_CHANNEL_SP_KEY, currentFeed);
         fieldsAdapter.setFields(fields);
     }
 

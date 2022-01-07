@@ -6,7 +6,7 @@
     android:id="@+id/layout.content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_Background"
+    app:cardBackgroundColor="@color/activity_Background"
     tools:context=".activity.MainActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -34,7 +34,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fields.rcv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="@dimen/padding_Extra_Large"
                 android:layout_below="@+id/lights.rcv"
                 android:clipToPadding="false"

@@ -8,6 +8,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.GsonBuilder;
+import com.rs.smartpoultryfarm.model.Feed;
 
 public class ApiHandler {
 
@@ -25,13 +26,13 @@ public class ApiHandler {
         return "https://api.thingspeak.com/channels/" + id + "/feeds/last.json?api_key=" + key;
     }
 
-    public static String updateControllerFeedURL(String key, String one, String two, String three, String four) {
+    public static String updateControllerFeedURL(String key, Feed feed) {
         return "https://api.thingspeak.com/update.json"
                 + "?api_key=" + key
-                + "&field1=" + one
-                + "&field2=" + two
-                + "&field3=" + three
-                + "&field4=" + four;
+                + "&field1=" + feed.getField1()
+                + "&field2=" + feed.getField2()
+                + "&field3=" + feed.getField3()
+                + "&field4=" + feed.getField4();
     }
 
     public static <T> void invoke(Context context, Class<T> type, int method, String url, OnDataListener<T> listener) {

@@ -15,9 +15,11 @@
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/ic_menu.xml" value="0.15989583333333332" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/ic_password_visible_off.xml" value="0.290625" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/ic_phone_contact.xml" value="0.290625" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/ic_phone_contacts.xml" value="0.1" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/ic_remove.xml" value="0.15989583333333332" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/ic_share.xml" value="0.15989583333333332" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/shape_button.xml" value="0.290625" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/shape_card.xml" value="0.15989583333333332" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/shape_dialog_notification.xml" value="0.290625" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/shape_inputs.xml" value="0.290625" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/shape_snackbar.xml" value="0.15989583333333332" />
@@ -27,6 +29,7 @@
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_add_contact.xml" value="0.19927536231884058" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_add_controller.xml" value="0.24139492753623187" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_add_controller_channel.xml" value="0.19067028985507245" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_contacts.xml" value="0.14375" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/layout_contain.xml" value="0.22826086956521738" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/layout_content.xml" value="0.14375" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/layout_field.xml" value="0.23278985507246377" />
