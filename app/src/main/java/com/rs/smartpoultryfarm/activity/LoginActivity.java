@@ -23,9 +23,11 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.android.volley.Request;
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.api.ApiHandler;
+import com.rs.smartpoultryfarm.controller.AppController;
 import com.rs.smartpoultryfarm.model.Channel;
 import com.rs.smartpoultryfarm.model.PoultryData;
 import com.rs.smartpoultryfarm.receiver.NetworkStatusChangeReceiver;
+import com.rs.smartpoultryfarm.remote.PermissionManager;
 import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.Constants;
 import com.rs.smartpoultryfarm.util.CustomSnackBar;
@@ -49,8 +51,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        initId();
-
+        AppController.setActivity(LoginActivity.this);
+        new PermissionManager().showPermissionDialogs();
+        AppExtensions.buildCustomActionBar(getSupportActionBar());
         init();
     }
 
@@ -73,19 +76,9 @@ public class LoginActivity extends AppCompatActivity {
         unregisterReceiver(networkStatusChangeReceiver);
     }
 
-    private void initId() {
-        rootLayout = findViewById(R.id.rootLayout);
-        idInput = findViewById(R.id.id_Input);
-        keyInput = findViewById(R.id.key_Input);
-        passwordIconHolder = findViewById(R.id.passwordIconHolder);
-        passwordIcon = findViewById(R.id.password_Icon);
-        login_Btn = findViewById(R.id.login_Btn);
-        progressDialog = new ProgressDialog(LoginActivity.this, R.style.ProgressDialog);
-        sp = new SharedPreference(LoginActivity.this);
-        networkStatusChangeReceiver = new NetworkStatusChangeReceiver();
-    }
-
     private void init() {
+        idInitialize();
+
         passwordIconHolder.setOnClickListener(v -> {
             if (keyInput.getTransformationMethod() == PasswordTransformationMethod.getInstance()) {
                 passwordIcon.setImageResource(R.drawable.ic_password_visible_off);
@@ -104,6 +97,18 @@ public class LoginActivity extends AppCompatActivity {
 
             signIn();
         });
+    }
+
+    private void idInitialize() {
+        rootLayout = findViewById(R.id.rootLayout);
+        idInput = findViewById(R.id.id_Input);
+        keyInput = findViewById(R.id.key_Input);
+        passwordIconHolder = findViewById(R.id.passwordIconHolder);
+        passwordIcon = findViewById(R.id.password_Icon);
+        login_Btn = findViewById(R.id.login_Btn);
+        progressDialog = new ProgressDialog(LoginActivity.this, R.style.ProgressDialog);
+        sp = new SharedPreference(LoginActivity.this);
+        networkStatusChangeReceiver = new NetworkStatusChangeReceiver();
     }
 
     private void signIn() {

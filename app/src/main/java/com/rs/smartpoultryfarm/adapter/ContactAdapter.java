@@ -31,7 +31,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         notifyDataSetChanged();
     }
 
-    private Contact getContact(int position){
+    private Contact contact(int position){
         return contacts.get(position);
     }
 
@@ -62,9 +62,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         Contact emergencyContact = sp.getEmergencyContact();
-        if(emergencyContact != null && emergencyContact.getNumber() != null && getContact(position) != null && getContact(position).getNumber() != null){
+        if(emergencyContact != null && emergencyContact.getNumber() != null && contact(position) != null && contact(position).getNumber() != null){
             String emergencyNumber = emergencyContact.getNumber();
-            String currentNumber = getContact(position).getNumber();
+            String currentNumber = contact(position).getNumber();
             if(emergencyNumber.equals(currentNumber)
                     || ("0" + emergencyNumber).equals(currentNumber)
                     || ("0" + currentNumber).equals(emergencyNumber)
@@ -86,11 +86,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             holder.removeContact.setVisibility(View.GONE);
         }
 
-        holder.contactName.setText(getContact(position).getName() == null ? string(R.string.unknown) : getContact(position).getName());
-        holder.contactNumber.setText(getContact(position).getNumber() == null ? string(R.string.numberNotFound) : getContact(position).getNumber());
+        holder.contactName.setText(contact(position).getName() == null ? string(R.string.unknown) : contact(position).getName());
+        holder.contactNumber.setText(contact(position).getNumber() == null ? string(R.string.numberNotFound) : contact(position).getNumber());
 
         holder.addContact.setOnClickListener(view -> {
-            sp.storeEmergencyContact(getContact(position));
+            sp.storeEmergencyContact(contact(position));
             notifyDataSetChanged();
         });
 

@@ -8,11 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import com.android.volley.Request;
 import com.rs.smartpoultryfarm.api.ApiHandler;
-import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.SharedPreference;
-
-import java.util.Collections;
-import java.util.Objects;
 
 public class AgroDataModel extends AndroidViewModel {
 

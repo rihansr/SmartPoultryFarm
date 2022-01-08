@@ -1,23 +1,18 @@
 package com.rs.smartpoultryfarm.activity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,7 +43,6 @@ import com.rs.smartpoultryfarm.util.CustomSnackBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -60,7 +54,6 @@ import com.rs.smartpoultryfarm.receiver.NetworkStatusChangeReceiver;
 import com.rs.smartpoultryfarm.util.SharedPreference;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import static android.net.ConnectivityManager.CONNECTIVITY_ACTION;
 
@@ -96,32 +89,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         AppController.setActivity(MainActivity.this);
-
-        new PermissionManager().showPermissionDialogs();
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowHomeEnabled(true);
-            actionBar.setLogo(R.drawable.app_logo_mini);
-            actionBar.setDisplayUseLogoEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setElevation(0);
-        }
-
+        AppExtensions.buildCustomActionBar(getSupportActionBar());
         init();
-
-        setAdapter();
-
-        setDrawer();
-
-        refreshLayout.setOnRefreshListener(this);
-
-        new NotifyUserReceiver().startNotifyService(this);
-
-        getFeedData();
-
-        getControllersState();
     }
 
     /**
@@ -186,6 +157,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void init(){
+        idInitialize();
+
+        setAdapter();
+
+        setDrawer();
+
+        refreshLayout.setOnRefreshListener(this);
+
+        new NotifyUserReceiver().startNotifyService(this);
+
+        getFeedData();
+
+        getControllersState();
+    }
+
+    private void idInitialize(){
         drawerLayout = findViewById(R.id.layout_drawer);
 
         contentView = findViewById(R.id.layout_content);
@@ -212,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         networkStatusChangeReceiver = new NetworkStatusChangeReceiver();
     }
 
-    public void setAdapter() {
+    private void setAdapter() {
         lightsAdapter = new LightAdapter();
         rcvLights.setAdapter(lightsAdapter);
         lightsAdapter.setFeed(sp.feedData(SharedPreference.CONTROLLER_FEED_SP_KEY));
@@ -223,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         fieldsAdapter.setFields(fields);
     }
 
-    public void setDrawer() {
+    private void setDrawer() {
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayout.setDrawerElevation(0);
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -446,7 +433,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     /**
      *  prompt permission dialog for notification
      **/
-    public void showNotificationDialog(){
+    private void showNotificationDialog(){
         if(notificationAlertDialog != null && notificationAlertDialog.isShowing() ) return;
 
         notificationAlertDialog = new AlertDialog.Builder(MainActivity.this, R.style.NotificationDialog).create();
@@ -474,7 +461,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     /**
      *  prompt permission dialog for autoStart
      **/
-    public void showAutoStartDialog(final Intent intent){
+    private void showAutoStartDialog(final Intent intent){
         if(autoStartAlertDialog != null && autoStartAlertDialog.isShowing() ) return;
 
         autoStartAlertDialog = new AlertDialog.Builder(MainActivity.this, R.style.NotificationDialog).create();

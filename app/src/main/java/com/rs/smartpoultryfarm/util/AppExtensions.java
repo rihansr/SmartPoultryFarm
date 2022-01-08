@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import com.rs.smartpoultryfarm.R;
@@ -28,6 +30,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class AppExtensions {
+
+    public static void buildCustomActionBar(ActionBar actionBar){
+        if(actionBar == null) return;
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setLogo(R.drawable.app_logo_mini);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setElevation(0);
+    }
 
     public static String formatVal(String val, String orElse) {
         if (val == null) return orElse;

@@ -54,14 +54,6 @@ public class LightAdapter extends RecyclerView.Adapter<LightAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    private String lightState(String state){
-        return AppExtensions.formatVal(state, "0");
-    }
-
-    boolean isSwitchOn(String status){
-        return lightState(status).equals("1");
-    }
-
     private Field light(int pos){
         return lights.get(pos);
     }
@@ -95,12 +87,6 @@ public class LightAdapter extends RecyclerView.Adapter<LightAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(v -> updateControllersState(holder.icon, position));
     }
 
-    private  void handleLight(LottieAnimationView icon, int pos){
-        if(isSwitchOn(this.lights.get(pos).getStatus()))
-            icon.playAnimation();
-        else icon.setProgress(0);
-    }
-
     private void updateControllersState(LottieAnimationView icon, int pos) {
         Channel channel = sp.channelData(SharedPreference.CONTROLLER_CHANNEL_SP_KEY + "_" + sp.channelData(SharedPreference.POULTRY_CHANNEL_SP_KEY).getChannelId());
         if (channel.getChannelId() == null) return;
@@ -127,6 +113,20 @@ public class LightAdapter extends RecyclerView.Adapter<LightAdapter.ViewHolder> 
                     public void onError() {
                     }
                 });
+    }
+
+    private String lightState(String state){
+        return AppExtensions.formatVal(state, "0");
+    }
+
+    private boolean isSwitchOn(String status){
+        return lightState(status).equals("1");
+    }
+
+    private void handleLight(LottieAnimationView icon, int pos){
+        if(isSwitchOn(this.lights.get(pos).getStatus()))
+            icon.playAnimation();
+        else icon.setProgress(0);
     }
 
     @Override

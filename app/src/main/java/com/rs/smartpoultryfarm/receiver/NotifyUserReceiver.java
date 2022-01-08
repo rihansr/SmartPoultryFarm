@@ -29,6 +29,8 @@ import com.rs.smartpoultryfarm.remote.PermissionManager;
 import com.rs.smartpoultryfarm.util.AppExtensions;
 import com.rs.smartpoultryfarm.util.Constants;
 import com.rs.smartpoultryfarm.util.SharedPreference;
+
+import java.util.ArrayList;
 import java.util.Collections;
 
 /**
@@ -176,14 +178,15 @@ public class NotifyUserReceiver extends BroadcastReceiver {
         }
     }
 
-    protected void sendSMS(Context context, String message) {
+    public void sendSMS(Context context, String message) {
         if (!new PermissionManager(PermissionManager.Permission.SMS, false).isGranted()) return;
         SharedPreference sp = new SharedPreference(context);
         Contact contact = sp.getEmergencyContact();
         if (contact == null || contact.getNumber() == null) return;
         try {
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(contact.getNumber(), null, message, null, null);
+            ArrayList<String> parts = smsManager.divideMessage(message);
+            smsManager.sendMultipartTextMessage(contact.getNumber(), null, parts, null, null);
             Log.e(Constants.TAG, "Message sent successfully");
         } catch (Exception ex) {
             Log.e(Constants.TAG, "Message not sent, reason: " + ex.getMessage());
