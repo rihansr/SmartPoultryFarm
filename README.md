@@ -1,2 +1,10 @@
 # <a id="raw-url" href="files/apk/smart_poultry_farm.apk">Smart Agro Firm &#8681;</a>
-<img src = "files/mockups/1.landing_view.png" width = "328.225" height = "644.725"> <img src = "files/mockups/2.add_contact.png" width = "328.225" height = "644.725"> <img src = "files/mockups/3.phone_contacts.png" width = "328.225" height = "644.725"> <img src = "files/mockups/4.emergency_contact.png" width = "328.225" height = "644.725"> <img src = "files/mockups/5.alert_message.png" width = "328.225" height = "644.725"> <img src = "files/mockups/6.alert_notification.png" width = "328.225" height = "644.725">
+<img src = "files/mockups/0_splash_screen.png" width = "296" height = "580">
+<img src = "files/mockups/1_login.png" width = "296" height = "580">
+<img src = "files/mockups/2_home.png" width = "296" height = "580">
+<img src = "files/mockups/3_drawer.png" width = "296" height = "580">
+<img src = "files/mockups/4_add_controller.png" width = "296" height = "580">
+<img src = "files/mockups/5_add_contact.png" width = "296" height = "580">
+<img src = "files/mockups/6_phone_contacts.png" width = "296" height = "580">
+<img src = "files/mockups/7_emergency_contact.png" width = "296" height = "580">
+<img src = "files/mockups/8_emergency_alert.png" width = "296" height = "580">
