@@ -33,13 +33,13 @@ public class NetworkStatusChangeReceiver extends BroadcastReceiver {
         Constants.IS_NETWORK_CONNECTED = isConnected;
 
         if (mContext.getClass() == SplashActivity.class) {
-            ((SplashActivity) mContext).updateInternetConnectionStatus(isConnected);
+            ((SplashActivity) mContext).monitorInternetConnection(isConnected);
         }
         else if (mContext.getClass() == LoginActivity.class) {
-            ((LoginActivity) mContext).updateInternetConnectionStatus(isConnected);
+            ((LoginActivity) mContext).monitorInternetConnection(isConnected);
         }
         else if (mContext.getClass() == MainActivity.class) {
-            ((MainActivity) mContext).updateInternetConnectionStatus(isConnected);
+            ((MainActivity) mContext).monitorInternetConnection(isConnected);
         }
     }
 

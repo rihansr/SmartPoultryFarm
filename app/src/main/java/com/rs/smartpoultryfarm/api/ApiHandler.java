@@ -1,8 +1,6 @@
 package com.rs.smartpoultryfarm.api;
 
 import android.content.Context;
-import android.util.Log;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -12,6 +10,7 @@ import com.rs.smartpoultryfarm.model.Feed;
 
 public class ApiHandler {
 
+    /** Default Credentials **/
     public static String DATA_CHANNEL_ID = "1562231";
     public static String DATA_READ_API_KEY = "ET9H1SY3HR9ZNLL5";
     public static String CONTROLLER_CHANNEL_ID = "1567504";

@@ -8,13 +8,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.rs.smartpoultryfarm.R;
 import com.rs.smartpoultryfarm.model.Field;
 import com.rs.smartpoultryfarm.util.AppExtensions;
-import com.rs.smartpoultryfarm.util.SharedPreference;
-
 import java.util.ArrayList;
 import java.util.List;
 

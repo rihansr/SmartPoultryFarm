@@ -24,20 +24,23 @@
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/shape_inputs.xml" value="0.290625" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/drawable/shape_snackbar.xml" value="0.15989583333333332" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.17637215528781794" />
-        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/activity_login.xml" value="0.25815217391304346" />
-        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/activity_splash.xml" value="0.2" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_add_contact.xml" value="0.19927536231884058" />
-        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_add_controller.xml" value="0.24139492753623187" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_add_controller.xml" value="0.2" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_add_controller_channel.xml" value="0.19067028985507245" />
-        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_contacts.xml" value="0.14375" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_contacts.xml" value="0.2" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/fragment_layout_emergency_contact.xml" value="0.2" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/layout_contain.xml" value="0.22826086956521738" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/layout_content.xml" value="0.14375" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/layout_custom_dialog.xml" value="0.2" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/layout_field.xml" value="0.23278985507246377" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/layout_light.xml" value="0.23278985507246377" />
-        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/layout_navigation.xml" value="0.22826086956521738" />
-        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/sample_contact.xml" value="0.14375" />
-        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/sample_field.xml" value="0.23278985507246377" />
-        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/sample_light.xml" value="0.23278985507246377" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/layout_navigation.xml" value="0.2" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/sample_contact.xml" value="0.2" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/sample_field.xml" value="0.2" />
+        <entry key="..\:/SmartPoultryFarm/app/src/main/res/layout/sample_light.xml" value="0.2" />
         <entry key="..\:/SmartPoultryFarm/app/src/main/res/menu/menu.xml" value="0.27447916666666666" />
       </map>
     </option>

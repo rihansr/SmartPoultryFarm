@@ -32,7 +32,6 @@ public class SplashActivity extends AppCompatActivity {
         init();
     }
 
-
     /**
      * {@link #onResume()} called when the activity is in the resumed state
      **/
@@ -42,7 +41,6 @@ public class SplashActivity extends AppCompatActivity {
         registerReceiver(networkStatusChangeReceiver, new IntentFilter(CONNECTIVITY_ACTION));
     }
 
-
     /**
      * {@link #onPause()} called when an activity is about to lose focus
      **/
@@ -51,7 +49,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onPause();
         unregisterReceiver(networkStatusChangeReceiver);
     }
-
 
     private void init() {
         networkCheckingTv = findViewById(R.id.networkCheckingTv);
@@ -84,11 +81,10 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
-
     /**
      * Monitor Internet Connection
      **/
-    public void updateInternetConnectionStatus(boolean isConnected) {
+    public void monitorInternetConnection(boolean isConnected) {
         if (isConnected) {
             if (isSplashDone) {
                 launchNewActivity();

@@ -490,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     /**
      *  Monitor Internet Connection
      **/
-    public void updateInternetConnectionStatus(boolean isConnected) {
+    public void monitorInternetConnection(boolean isConnected) {
         if (isConnected) {
             if(CustomSnackBar.snackbar != null) CustomSnackBar.snackbar.dismiss();
         }

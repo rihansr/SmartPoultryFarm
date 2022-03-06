@@ -42,11 +42,6 @@ public class PermissionManager {
         this.activity = AppController.getActivity();
     }
 
-    public PermissionManager(Permission permission) {
-        this.activity = AppController.getActivity();
-        this.permission = permission;
-    }
-
     public PermissionManager(Permission permission, boolean showDialog) {
         this.context = AppController.getContext();
         this.activity = AppController.getActivity();
