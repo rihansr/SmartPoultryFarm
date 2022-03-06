@@ -25,4 +25,6 @@ https://github.com/rihansr/SmartPoultryFarm/blob/main/files/apk/smart_poultry_fa
 ```
 
 ## Snapshots
-<img src = "files/mockups/1.landing_view.png" width = "328.225" height = "644.725"> <img src = "files/mockups/2.add_contact.png" width = "328.225" height = "644.725"> <img src = "files/mockups/3.phone_contacts.png" width = "328.225" height = "644.725"> <img src = "files/mockups/4.emergency_contact.png" width = "328.225" height = "644.725"> <img src = "files/mockups/5.alert_message.png" width = "328.225" height = "644.725"> <img src = "files/mockups/6.alert_notification.png" width = "328.225" height = "644.725">
+<img src = "files/mockups/0_splash_screen.png" width = "262.58" height = "515.78"> <img src = "files/mockups/1_login.png" width = "262.58" height = "515.78"> <img src = "files/mockups/2_home.png" width = "262.58" height = "515.78">
+<img src = "files/mockups/3_drawer.png" width = "262.58" height = "515.78"> <img src = "files/mockups/4_add_controller.png" width = "262.58" height = "515.78"> <img src = "files/mockups/5_add_contact.png" width = "262.58" height = "515.78">
+<img src = "files/mockups/6_phone_contacts.png" width = "262.58" height = "515.78"> <img src = "files/mockups/7_emergency_contact.png" width = "262.58" height = "515.78"> <img src = "files/mockups/8_emergency_alert.png" width = "262.58" height = "515.78">
